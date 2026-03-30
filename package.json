@@ -1,0 +1,49 @@
+{
+  "name": "api-jessval",
+  "version": "1.0.0",
+  "description": "api para manejar el core del negocio",
+  "homepage": "https://github.com/juancrespo25/api-jessval#readme",
+  "bugs": {
+    "url": "https://github.com/juancrespo25/api-jessval/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juancrespo25/api-jessval.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "build": "turbo run build",
+    "start:dev": "turbo run start:dev"
+  },
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ],
+  "packageManager": "npm@11.7.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.3",
+    "cors": "^2.8.5",
+    "exceljs": "^4.4.0",
+    "jsonwebtoken": "^9.0.2",
+    "node-path": "^0.0.3",
+    "pg": "^8.20.0",
+    "pg-query-stream": "^4.14.0",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.28",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^25.5.0",
+    "turbo": "^2.9.0"
+  }
+}
