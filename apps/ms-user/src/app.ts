@@ -1,6 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-import { customerRoutes } from './module/presentations';
 
 class App {
 
@@ -24,10 +23,8 @@ class App {
         });
 
         this.app.get("/", (req, res) => {
-            res.status(200).json("Welcome to the Customer Service API");
+            res.status(200).json("Welcome to the User Service API");
         });
-
-        this.app.use('/customer', customerRoutes);
     }
 }
 
