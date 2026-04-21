@@ -1,6 +1,6 @@
-import { IsBoolean, IsEmail, IsNotEmpty, IsString, MinLength } from "class-validator";
+import { IsBoolean, IsEmail, IsNotEmpty, IsString, Length, MinLength } from "class-validator";
 
-export class CustomerCreateDTO {
+export class CustomerUpdateBodyDTO {
 
     @IsNotEmpty()
     @IsString()
@@ -9,7 +9,12 @@ export class CustomerCreateDTO {
 
     @IsNotEmpty()
     @IsString()
-    @MinLength(11)
+    @Length(10,10)
+    codigo: string;
+
+    @IsNotEmpty()
+    @IsString()
+    @Length(11,11)
     ruc: string;
 
     @IsString()
@@ -36,6 +41,6 @@ export class CustomerCreateDTO {
     status?: boolean;
 
     @IsString()
-    @MinLength(10)
-    userCreated?: string;
+    @Length(10,10)
+    userUpdated?: string;
 }

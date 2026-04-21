@@ -1,54 +1,52 @@
-export type CustomerProps = {
+export type UserProps = {
     id?: string;
-    descripcion: string;
     codigo: string;
-    ruc: string;
-    direccion: string;
-    ubigeo: string;
-    contacto?: string;
+    nombres: string;
+    apellidos: string;
     email?: string;
     telefono?: string;
     status?: boolean;
+    area?: string;
+    user_name?: string;
+    password?: string;
     userCreated?: string;
     createdAt?: Date;
     userUpdated?: string;
 }
 
-export class Customer {
+export class User {
     private readonly id?: string;
-    private readonly descripcion!: string;
     private readonly codigo!: string;
-    private readonly ruc!: string;
-    private readonly direccion!: string;
-    private readonly ubigeo!: string;
-    private readonly contacto?: string;
+    private readonly nombres!: string;
+    private readonly apellidos!: string;
     private readonly email?: string;
     private readonly telefono?: string;
     private readonly status?: boolean;
+    private readonly area?: string;
+    private readonly user_name?: string;
+    private readonly password?: string;
     private readonly userCreated?: string;
     private readonly createdAt?: Date;
     private readonly userUpdated?: string;
-
-
-    constructor(props: CustomerProps) {
+    constructor(props: UserProps) {
         Object.assign(this, props);
     }
 
     get properties() {
         return {
             id: this.id,
-            descripcion: this.descripcion,
             codigo: this.codigo,
-            ruc: this.ruc,
-            direccion: this.direccion,
-            ubigeo: this.ubigeo,
-            contacto: this.contacto,
+            nombres: this.nombres,
+            apellidos: this.apellidos,
             email: this.email,
             telefono: this.telefono,
             status: this.status,
+            area: this.area,
+            user_name: this.user_name,
+            password: this.password,
             userCreated: this.userCreated,
             createdAt: this.createdAt,
-            userUpdated: this.userUpdated,
+            userUpdated: this.userUpdated
         }
     }
 }

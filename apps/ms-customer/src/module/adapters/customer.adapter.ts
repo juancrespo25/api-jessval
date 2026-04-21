@@ -2,11 +2,23 @@ import { DataBaseBootstrapp } from "../../bootstrapp";
 import { ICustomerPort } from "../ports";
 import { Customer } from "../applications";
 import { CustomerEntity } from "./entities";
+import { Repository } from "typeorm";
 
 export class CustomerAdapter implements ICustomerPort {
+
+  private repository: Repository<CustomerEntity> | null = null;
+
+  private getRepository(): Repository<CustomerEntity> {
+    if (!this.repository) {
+      if (!DataBaseBootstrapp.dataSource) {
+        throw new Error("Database connection not initialized");
+      }
+      this.repository = DataBaseBootstrapp.dataSource.getRepository(CustomerEntity);
+    }
+    return this.repository;
+  }
   async create(customer: Customer): Promise<Customer> {
-    const repository =
-      DataBaseBootstrapp.dataSource.getRepository(CustomerEntity);
+
     const {
       descripcion,
       codigo,
@@ -16,7 +28,7 @@ export class CustomerAdapter implements ICustomerPort {
       contacto,
       email,
       telefono,
-      activo,
+      status,
       userCreated,
     } = customer.properties;
 
@@ -30,21 +42,21 @@ export class CustomerAdapter implements ICustomerPort {
       contacto,
       email,
       telefono,
-      activo,
+      status,
       userCreated,
     });
 
-    const savedEntity = await repository.save(entity);
-    return new Customer({ ...savedEntity });
+    const savedEntity = await this.getRepository().save(entity);
+    return new Customer({ ...customer.properties, id: savedEntity.id, createdAt: savedEntity.createdAt });
   }
 
   async findAll(status?: boolean): Promise<Customer[]> {
-    const repository =
-      DataBaseBootstrapp.dataSource.getRepository(CustomerEntity);
-    const whereClause = status !== undefined ? { activo: status } : {};
-    const customers = await repository.find({
+
+    const whereClause = status !== undefined ? { status: status } : {};
+    const customers = await this.getRepository().find({
       where: whereClause,
       select: {
+        id: true,
         descripcion: true,
         codigo: true,
         ruc: true,
@@ -53,16 +65,34 @@ export class CustomerAdapter implements ICustomerPort {
         contacto: true,
         email: true,
         telefono: true,
+        status: true,
+        userCreated: true,
+        createdAt: true,
+        userUpdated: true,
       },
     });
     if (!customers) return [];
-    return customers.map((customer) => new Customer({ ...customer }));
+    return customers.map((customer) => new Customer({
+      id: customer.id,
+      descripcion: customer.descripcion,
+      codigo: customer.codigo,
+      ruc: customer.ruc,
+      direccion: customer.direccion,
+      ubigeo: customer.ubigeo,
+      contacto: customer.contacto,
+      email: customer.email,
+      telefono: customer.telefono,
+      status: customer.status,
+      userCreated: customer.userCreated,
+      createdAt: customer.createdAt,
+      userUpdated: customer.userUpdated,
+    }));
   }
   async findById(code: string): Promise<Customer | null> {
-    const repository =
-      DataBaseBootstrapp.dataSource.getRepository(CustomerEntity);
-    const customer = await repository.findOne({
+
+    const customer = await this.getRepository().findOne({
       select: {
+        id: true,
         descripcion: true,
         codigo: true,
         ruc: true,
@@ -71,28 +101,73 @@ export class CustomerAdapter implements ICustomerPort {
         contacto: true,
         email: true,
         telefono: true,
+        status: true,
+        userCreated: true,
+        createdAt: true,
+        userUpdated: true,
       },
       where: { codigo: code },
     });
     if (!customer) return null;
-    return new Customer({ ...customer });
+    return new Customer({
+      id: customer.id,
+      descripcion: customer.descripcion,
+      codigo: customer.codigo,
+      ruc: customer.ruc,
+      direccion: customer.direccion,
+      ubigeo: customer.ubigeo,
+      contacto: customer.contacto,
+      email: customer.email,
+      telefono: customer.telefono,
+      status: customer.status,
+      userCreated: customer.userCreated,
+      createdAt: customer.createdAt,
+      userUpdated: customer.userUpdated,
+    });
   }
 
-  async findByName(name: string): Promise<Customer | null> {
-    const repository =
-      DataBaseBootstrapp.dataSource.getRepository(CustomerEntity);
-    const customer = await repository
+  async findByName(name: string): Promise<Customer[]> {
+
+    const customers = await this.getRepository()
       .createQueryBuilder("customer")
+      .select([
+        "customer.id",
+        "customer.descripcion",
+        "customer.codigo",
+        "customer.ruc",
+        "customer.direccion",
+        "customer.ubigeo",
+        "customer.contacto",
+        "customer.email",
+        "customer.telefono",
+        "customer.status",
+        "customer.userCreated",
+        "customer.createdAt",
+        "customer.userUpdated",
+      ])
       .where("UPPER(customer.descripcion) LIKE :name", {
         name: `%${name.toUpperCase()}%`,
       })
-      .getOne();
-    if (!customer) return null;
-    return new Customer({ ...customer });
+      .getMany();
+    if (!customers || customers.length === 0) return [];
+    return customers.map((customer) => new Customer({
+      id: customer.id,
+      descripcion: customer.descripcion,
+      codigo: customer.codigo,
+      ruc: customer.ruc,
+      direccion: customer.direccion,
+      ubigeo: customer.ubigeo,
+      contacto: customer.contacto,
+      email: customer.email,
+      telefono: customer.telefono,
+      status: customer.status,
+      userCreated: customer.userCreated,
+      createdAt: customer.createdAt,
+      userUpdated: customer.userUpdated,
+    }));
   }
   async update(customer: Customer): Promise<Customer> {
-    const repository =
-      DataBaseBootstrapp.dataSource.getRepository(CustomerEntity);
+
       const {
       descripcion,
       codigo,
@@ -102,34 +177,62 @@ export class CustomerAdapter implements ICustomerPort {
       contacto,
       email,
       telefono,
-      activo,
+      status,
       userUpdated,
     } = customer.properties;
-    const result = await repository.findOne({ where: { codigo: codigo } });
+    const result = await this.getRepository().findOne({ where: { codigo: codigo } });
     if (!result) return null;
 
-    Object.assign(result, { ...customer.properties });
-    const updatedEntity = await repository.save(result);
-    return new Customer({ ...updatedEntity });
+    Object.assign(result, {
+      descripcion,
+      codigo,
+      ruc,
+      direccion,
+      ubigeo,
+      contacto,
+      email,
+      telefono,
+      status,
+      userUpdated,
+      updatedAt: new Date(),
+    });
+    const updatedEntity = await this.getRepository().update({ id: result.id }, result);
+    if (updatedEntity.affected === 0) {
+      return null;
+    }
+    return new Customer({
+      id: result.id,
+      descripcion: result.descripcion,
+      codigo: result.codigo,
+      ruc: result.ruc,
+      direccion: result.direccion,
+      ubigeo: result.ubigeo,
+      contacto: result.contacto,
+      email: result.email,
+      telefono: result.telefono,
+      status: result.status,
+      userCreated: result.userCreated,
+      createdAt: result.createdAt,
+      userUpdated: result.userUpdated,
+    });
   }
+
   async delete(code: string, userUpdate: string): Promise<boolean> {
-    const repository =
-      DataBaseBootstrapp.dataSource.getRepository(CustomerEntity);
-    const result = await repository.findOne({ where: { codigo: code } });
+
+    const result = await this.getRepository().findOne({ where: { codigo: code } });
     if (!result) return false;
 
-    const customerToUpdate = await repository.update(
+    const customerToUpdate = await this.getRepository().update(
       { id: result.id },
       {
-        activo: false,
+        status: false,
         userInactive: userUpdate,
         inactiveAt: new Date(),
       },
     );
 
-    if (customerToUpdate.affected === 0) {
-      return false;
-    }
+    if (customerToUpdate.affected === 0) return false;
+
     return true;
   }
 }

@@ -1,27 +1,19 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity({ name: 'customer'})
-export class CustomerEntity {
+@Entity({ name: 'user'})
+export class UserEntity {
+
     @PrimaryGeneratedColumn('uuid')
     id!: string;
-
-    @Column({ type: "varchar", length: 100, nullable: false })
-    descripcion!: string;
 
     @Column({ type: "char", length: 10, unique: true ,nullable: false })
     codigo!: string;
 
-    @Column({ type: "char", length: 11, unique: true, nullable: false })
-    ruc!: string;
+    @Column({ type: "varchar", length: 100, nullable: false })
+    nombres!: string;
 
     @Column({ type: "varchar", length: 100, nullable: false })
-    direccion!: string;
-
-    @Column({ type: "char", length: 6, nullable: false })
-    ubigeo!: string;
-
-    @Column({ type: "varchar", length: 70, nullable: true })
-    contacto!: string;
+    apellidos!: string;
 
     @Column({ type: "varchar", length: 70, nullable: true })
     email!: string;
@@ -31,6 +23,15 @@ export class CustomerEntity {
 
     @Column({ type: "boolean", nullable: true })
     status!: boolean;
+
+    @Column({ type: "char", length: 10, nullable: true })
+    area!: string;
+
+    @Column({ type: "varchar", length: 50, nullable: true })
+    user_name!: string;
+
+    @Column({ type: "varchar", length: 200, nullable: true })
+    password!: string;
 
     @Column({ type: "char", length: 10, nullable: true })
     userCreated!: string;
@@ -49,5 +50,4 @@ export class CustomerEntity {
 
     @Column({ type: "timestamp", nullable: true })
     inactiveAt!: Date | null;
-
 }

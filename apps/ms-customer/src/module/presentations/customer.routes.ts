@@ -16,6 +16,7 @@ class CustomerRoutes {
         this.router.get('/', this.controller.findAll.bind(this.controller));
         this.router.get('/:code', this.controller.findById.bind(this.controller));
         this.router.delete('/', this.controller.delete.bind(this.controller));
+        this.router.put('/', this.controller.update.bind(this.controller));
     }
 }
 

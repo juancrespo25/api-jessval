@@ -1,16 +1,22 @@
 import type { Request, Response } from "express";
-import { Customer, CustomerApplication } from "../applications";
+import { User, UserApplication } from "../applications";
 import { plainToInstance } from "class-transformer";
-import { CustomerCreateDTO, CustomerCodeDTO, CustomerUpdateDTO, CustomerStatusDTO, CustomerUpdateBodyDTO } from "./dto";
+import {
+  UserCreateDTO,
+  UserCodeDTO,
+  UserDeleteDTO,
+  UserUpdateDTO,
+  UserStatusDTO,
+} from "./dto";
 import { validate } from "class-validator";
-import { CustomerService } from "./customer.service";
+import { UserService } from "./user.service";
 
-export class CustomerController {
-  constructor(private readonly application: CustomerApplication) {}
+export class UserController {
+  constructor(private readonly application: UserApplication) {}
 
   async create(req: Request, res: Response) {
-    const customerDTO = plainToInstance(CustomerCreateDTO, req.body);
-    const error = await validate(customerDTO);
+    const userDTO = plainToInstance(UserCreateDTO, req.body);
+    const error = await validate(userDTO);
 
     if (error.length > 0) {
       return res.status(400).json({
@@ -20,50 +26,56 @@ export class CustomerController {
         errors: error,
       });
     } else {
-      const customer = new Customer({
-        ...customerDTO,
-        codigo: CustomerService.generateCode(),
+      const user = new User({
+        ...userDTO,
+        codigo: UserService.generateCode(),
+        password: await UserService.crypt(req.body.password),
       });
-      const customerCreated = await this.application.create(customer);
+      const userCreated = await this.application.create(user);
       return res.status(201).json({
         status: 201,
         success: true,
-        message: "Customer created successfully",
-        data: customerCreated,
+        message: "User created successfully",
+        data: userCreated,
       });
     }
   }
 
   async findAll(req: Request, res: Response) {
     const statusParam = req.query.status as string;
-    const status = statusParam === 'true' ? true : statusParam === 'false' ? false : undefined;
+    const status =
+      statusParam === "true"
+        ? true
+        : statusParam === "false"
+          ? false
+          : undefined;
 
-    const customerStatusDTO = plainToInstance(CustomerStatusDTO, { status });
-
-    const error = await validate(customerStatusDTO);
+    const userStatusDTO = plainToInstance(UserStatusDTO, { status });
+    const error = await validate(userStatusDTO);
 
     if (error.length > 0 || status === undefined) {
       return res.status(400).json({
         status: 400,
         success: false,
         message: "Validation failed",
-        errors: "Invalid status query parameter. It should be 'true' or 'false'.",
+        errors:
+          "Invalid status query parameter. It should be 'true' or 'false'.",
       });
     } else {
-      const customers = await this.application.findAll(status);
+      const users = await this.application.findAll(status);
       return res.status(200).json({
         status: 200,
         success: true,
-        message: "Customers retrieved successfully",
-        data: customers,
+        message: "Users retrieved successfully",
+        data: users,
       });
     }
   }
 
   async findById(req: Request, res: Response) {
-    const customerCodeDTO = plainToInstance(CustomerCodeDTO, req.params);
-    const error = await validate(customerCodeDTO);
-
+    const userCodeDTO = plainToInstance(UserCodeDTO, req.params);
+    console.log(userCodeDTO);
+    const error = await validate(userCodeDTO);
     if (error.length > 0) {
       return res.status(400).json({
         status: 400,
@@ -72,27 +84,26 @@ export class CustomerController {
         errors: error,
       });
     } else {
-      const customer = await this.application.findById(customerCodeDTO.code);
-      if (!customer) {
+      const user = await this.application.findById(userCodeDTO.code);
+      if (!user) {
         return res.status(404).json({
           status: 404,
           success: false,
-          message: "Customer not found",
+          message: "User not found",
         });
       }
       return res.status(200).json({
         status: 200,
         success: true,
-        message: "Customer retrieved successfully",
-        data: customer,
+        message: "User retrieved successfully",
+        data: user,
       });
     }
   }
 
   async delete(req: Request, res: Response) {
-    const customerDTO = plainToInstance(CustomerUpdateDTO, req.body);
-    const error = await validate(customerDTO);
-
+    const userDeleteDTO = plainToInstance(UserDeleteDTO, req.body);
+    const error = await validate(userDeleteDTO);
     if (error.length > 0) {
       return res.status(400).json({
         status: 400,
@@ -102,27 +113,27 @@ export class CustomerController {
       });
     } else {
       const result = await this.application.delete(
-        customerDTO.code,
-        customerDTO.userUpdate,
+        userDeleteDTO.code,
+        userDeleteDTO.userDelete,
       );
       if (!result) {
         return res.status(404).json({
           status: 404,
           success: false,
-          message: "Customer not found",
+          message: "User not found",
         });
       }
       return res.status(200).json({
         status: 200,
         success: true,
-        message: "Customer deleted successfully",
+        message: "User deleted successfully",
       });
     }
   }
 
   async update(req: Request, res: Response) {
-    const customerDTO = plainToInstance(CustomerUpdateBodyDTO, req.body);
-    const error = await validate(customerDTO);
+    const userDTO = plainToInstance(UserUpdateDTO, req.body);
+    const error = await validate(userDTO);
 
     if (error.length > 0) {
       return res.status(400).json({
@@ -132,19 +143,24 @@ export class CustomerController {
         errors: error,
       });
     } else {
-      const customer = await this.application.update(new Customer(customerDTO));
-      if (!customer) {
+      const user = new User({
+        ...userDTO,
+        password: await UserService.crypt(userDTO.password),
+      });
+      const updatedUser = await this.application.update(user);
+
+      if (!updatedUser) {
         return res.status(404).json({
           status: 404,
           success: false,
-          message: "Customer not found",
+          message: "User not found",
         });
       }
       return res.status(200).json({
         status: 200,
         success: true,
-        message: "Customer updated successfully",
-        data: customer,
+        message: "User updated successfully",
+        data: updatedUser,
       });
     }
   }
