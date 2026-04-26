@@ -15,6 +15,7 @@ class UserRoutes {
     this.router.post("/", this.controller.create.bind(this.controller));
     this.router.get('/', this.controller.findAll.bind(this.controller));
     this.router.get('/:code', this.controller.findById.bind(this.controller));
+    this.router.get('/username/:user_name', this.controller.findByUsername.bind(this.controller));
     this.router.delete('/', this.controller.delete.bind(this.controller));
     this.router.patch('/', this.controller.update.bind(this.controller));
   }

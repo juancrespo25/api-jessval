@@ -16,6 +16,11 @@ export class UserApplication {
     async findById(id: string): Promise<User> {
         return await this.repository.findById(id);
     }
+
+    async findByUsername(username: string): Promise<User> {
+        return await this.repository.findByUsername(username);
+    }
+
     async findByName(name: string): Promise<User[]> {
         return await this.repository.findByName(name);
     }

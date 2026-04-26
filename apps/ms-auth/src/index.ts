@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import app from "./app";
-import { type Bootstrapp, ServerBootstrap, DataBaseBootstrapp } from "./bootstrapp"
+import { type Bootstrapp, ServerBootstrap } from "./bootstrapp"
 
 
 (async () => {
@@ -8,11 +8,9 @@ import { type Bootstrapp, ServerBootstrap, DataBaseBootstrapp } from "./bootstra
     try {
 
         const serverBootstrap: Bootstrapp = new ServerBootstrap(app)
-        const databaseBootstrap: Bootstrapp = new DataBaseBootstrapp()
 
         const promises = [
-            serverBootstrap.initialize(),
-            databaseBootstrap.initialize()
+            serverBootstrap.initialize()
         ]
 
         const results = await Promise.all(promises)

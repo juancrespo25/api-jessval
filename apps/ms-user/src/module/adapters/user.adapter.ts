@@ -113,7 +113,38 @@ export class UserAdapter implements IUserPort {
       userUpdated: user.userUpdated,
     });
   }
- async findByName(name: string): Promise<User[]> {
+
+ async findByUsername(username: string): Promise<User> {
+    const user = await this.getRepository().findOne({
+      select: {
+        id: true,
+        codigo: true,
+        nombres: true,
+        apellidos: true,
+        email: true,
+        telefono: true,
+        status: true,
+        password: true
+      },
+      where: { user_name: username },
+    });
+    if (!user) return null;
+    return new User({
+      id: user.id,
+      codigo: user.codigo,
+      nombres: user.nombres,
+      apellidos: user.apellidos,
+      email: user.email,
+      telefono: user.telefono,
+      status: user.status,
+      area: user.area,
+      userCreated: user.userCreated,
+      createdAt: user.createdAt,
+      userUpdated: user.userUpdated,
+      password: user.password,
+    });
+  }
+  async findByName(name: string): Promise<User[]> {
     const users = await this.getRepository()
       .createQueryBuilder("user")
       .select([

@@ -6,8 +6,8 @@ import {
   UserCodeDTO,
   UserDeleteDTO,
   UserUpdateDTO,
-  UserStatusDTO,
-} from "./dto";
+  UserNameDTO,
+  UserStatusDTO} from "./dto";
 import { validate } from "class-validator";
 import { UserService } from "./user.service";
 
@@ -74,7 +74,7 @@ export class UserController {
 
   async findById(req: Request, res: Response) {
     const userCodeDTO = plainToInstance(UserCodeDTO, req.params);
-    console.log(userCodeDTO);
+   
     const error = await validate(userCodeDTO);
     if (error.length > 0) {
       return res.status(400).json({
@@ -92,6 +92,28 @@ export class UserController {
           message: "User not found",
         });
       }
+      return res.status(200).json({
+        status: 200,
+        success: true,
+        message: "User retrieved successfully",
+        data: user,
+      });
+    }
+  }
+
+  async findByUsername(req: Request, res: Response) {
+    const userNameDTO = plainToInstance(UserNameDTO, req.params);
+    const error = await validate(userNameDTO);
+
+    if (error.length > 0) {
+      return res.status(400).json({
+        status: 400,
+        success: false,
+        message: "Username parameter is required",
+        errors: error,
+      });
+    } else {
+      const user = await this.application.findByUsername(userNameDTO.user_name);
       return res.status(200).json({
         status: 200,
         success: true,
