@@ -1,6 +1,6 @@
 import { IsBoolean, IsEmail, IsNotEmpty, IsString, Length, MinLength } from "class-validator";
 
-export class CustomerCreateDTO {
+export class CentroCostoCreateDTO {
 
     @IsNotEmpty()
     @IsString()
@@ -9,17 +9,12 @@ export class CustomerCreateDTO {
 
     @IsNotEmpty()
     @IsString()
-    @Length(11,11)
-    ruc: string;
-
-    @IsString()
-    @MinLength(10)
-    direccion: string;
+    @Length(10,10)
+    cliente: string;
 
     @IsNotEmpty()
-    @IsString()
-    @Length(6,6)
-    ubigeo: string;
+    @IsBoolean()
+    status?: boolean;
 
     @IsString()
     @MinLength(10)
@@ -30,10 +25,6 @@ export class CustomerCreateDTO {
 
     @IsString()
     telefono?: string;
-
-    @IsNotEmpty()
-    @IsBoolean()
-    status?: boolean;
 
     @IsString()
     @Length(10,10)

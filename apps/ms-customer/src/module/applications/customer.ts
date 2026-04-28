@@ -12,6 +12,7 @@ export type CustomerProps = {
     userCreated?: string;
     createdAt?: Date;
     userUpdated?: string;
+    updatedAt?: Date;
 }
 
 export class Customer {
@@ -28,7 +29,7 @@ export class Customer {
     private readonly userCreated?: string;
     private readonly createdAt?: Date;
     private readonly userUpdated?: string;
-
+    private readonly updatedAt?: Date;
 
     constructor(props: CustomerProps) {
         Object.assign(this, props);
@@ -49,6 +50,7 @@ export class Customer {
             userCreated: this.userCreated,
             createdAt: this.createdAt,
             userUpdated: this.userUpdated,
+            updatedAt: this.updatedAt,
         }
     }
 }

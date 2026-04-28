@@ -86,6 +86,7 @@ export class CustomerAdapter implements ICustomerPort {
       userCreated: customer.userCreated,
       createdAt: customer.createdAt,
       userUpdated: customer.userUpdated,
+      updatedAt: customer.updatedAt,
     }));
   }
   async findById(code: string): Promise<Customer | null> {
@@ -123,6 +124,7 @@ export class CustomerAdapter implements ICustomerPort {
       userCreated: customer.userCreated,
       createdAt: customer.createdAt,
       userUpdated: customer.userUpdated,
+      updatedAt: customer.updatedAt,
     });
   }
 
@@ -211,9 +213,8 @@ export class CustomerAdapter implements ICustomerPort {
       email: result.email,
       telefono: result.telefono,
       status: result.status,
-      userCreated: result.userCreated,
-      createdAt: result.createdAt,
       userUpdated: result.userUpdated,
+      updatedAt: result.updatedAt,
     });
   }
 
