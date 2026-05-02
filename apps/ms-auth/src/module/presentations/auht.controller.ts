@@ -46,7 +46,7 @@ export class AuthController {
         const isValid = await this.application.verifyToken(token);
 
         if (isValid) {
-            return response.status(200).json({ status: 200, message: 'Token is valid' });
+            return response.status(200).json({ status: 200, isValid, message: 'Token is valid' });
         } else {
             return response.status(401).json({ status: 401, message: 'Invalid token', data: null });
         }

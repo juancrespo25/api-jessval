@@ -124,9 +124,12 @@ export class UserController {
   }
 
   async delete(req: Request, res: Response) {
+
+    console.log(req.body);
     const userDeleteDTO = plainToInstance(UserDeleteDTO, req.body);
     const error = await validate(userDeleteDTO);
     if (error.length > 0) {
+       console.log(0);
       return res.status(400).json({
         status: 400,
         success: false,
@@ -136,8 +139,9 @@ export class UserController {
     } else {
       const result = await this.application.delete(
         userDeleteDTO.code,
-        userDeleteDTO.userDelete,
+        userDeleteDTO.userDeleted,
       );
+      console.log(1);
       if (!result) {
         return res.status(404).json({
           status: 404,

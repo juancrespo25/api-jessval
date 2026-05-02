@@ -1,14 +1,8 @@
 import { IsNotEmpty, IsString, Length } from "class-validator";
 
-export class UserDeleteDTO {
-
+export class UserCodeDTO {
   @IsNotEmpty()
   @IsString()
   @Length(10,10)
   code: string;
-
-  @IsNotEmpty()
-  @IsString()
-  @Length(10,10)
-  userDeleted?: string;
 }
