@@ -1,12 +1,10 @@
 import {
-
   IsNotEmpty,
   IsString,
-  Length,
-  MinLength,
+  Length
 } from "class-validator";
 
-export class CustomerUpdateDTO {
+export class CentroCostoUpdateDTO {
   @IsNotEmpty()
   @IsString()
   @Length(10,10)

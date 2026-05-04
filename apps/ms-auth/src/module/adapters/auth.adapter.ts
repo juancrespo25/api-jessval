@@ -8,7 +8,6 @@ export class AuthAdapter implements IAuthPort {
         const { user_name } = auth.properties;
 
         const response = await fetch(`${env.SERVICE_NAME_USER}/user/username/${user_name}`);
-
         if (!response.ok) {
             throw new Error(`Error fetching user data: ${response.statusText}`);
         }

@@ -103,7 +103,7 @@ export class CustomerController {
     } else {
       const result = await this.application.delete(
         customerDTO.code,
-        customerDTO.userUpdate,
+        customerDTO.userUpdated,
       );
       if (!result) {
         return res.status(404).json({
@@ -123,7 +123,7 @@ export class CustomerController {
   async update(req: Request, res: Response) {
     const customerDTO = plainToInstance(CustomerUpdateBodyDTO, req.body);
     const error = await validate(customerDTO);
-
+    console.log(customerDTO);
     if (error.length > 0) {
       return res.status(400).json({
         status: 400,
@@ -132,6 +132,7 @@ export class CustomerController {
         errors: error,
       });
     } else {
+      console.log('actualizando')
       const customer = await this.application.update(new Customer(customerDTO));
       if (!customer) {
         return res.status(404).json({

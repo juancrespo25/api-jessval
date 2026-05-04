@@ -17,7 +17,6 @@ export class AuthController {
         if (errors.length > 0) {
             return response.status(400).json({ status: 400, message: 'Validation failed', errors });
         }else {
-            console.log("ok")
             const auth = new Auth({...request.body});
             const token = await this.application.login(auth);
 

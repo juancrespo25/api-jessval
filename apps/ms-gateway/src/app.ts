@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import { gatewayRoutes } from './module/presentations/auth.presentation';
 import { userGatewayRoutes} from './module/presentations/user.presentation';
+import { customerGatewayRoutes } from './module/presentations/customer.presentation';
+import { centerCostGatewayRoutes } from './module/presentations/centercost.presentation';
 
 class App {
 
@@ -30,6 +32,8 @@ class App {
 
         this.app.use('/api', gatewayRoutes);
         this.app.use('/api', userGatewayRoutes);
+        this.app.use('/api', customerGatewayRoutes);
+        this.app.use('/api', centerCostGatewayRoutes);
     }
 }
 
