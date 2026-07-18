@@ -4,11 +4,13 @@ import { plainToInstance } from "class-transformer";
 import {
   CustomerCodeDTO,
   CustomerCreateDTO,
+  CustomerRucDto,
   CustomerStatusDTO,
   CustomerUpdateBodyDTO,
   CustomerUpdateDTO,
 } from "./dtos";
 import { validate } from "class-validator";
+import { CustomerNameDto } from "./dtos/customer-name.dto";
 
 export class CustomerGatewayController {
   constructor(private readonly application: CustomerGatewayApplication) {}
@@ -31,6 +33,8 @@ export class CustomerGatewayController {
         customerCreateDto.email,
         customerCreateDto.telefono,
         customerCreateDto.status,
+        customerCreateDto.user,
+        customerCreateDto.password,
         customerCreateDto.userCreated,
       );
 
@@ -104,6 +108,55 @@ export class CustomerGatewayController {
     }
   }
 
+  async findByName(request: Request, response: Response) {
+    const userNameDTO = plainToInstance(CustomerNameDto, request.params);
+    const error = await validate(userNameDTO);
+
+    if (error.length > 0) {
+      return response
+        .status(400)
+        .json({ status: 400, message: "Validation failed", errors: error });
+    }else {
+      const user = await this.application.findByName(userNameDTO.name);
+
+      if (!user) {
+        return response
+          .status(404)
+          .json({ status: 404, message: "User not found" });
+      } else {
+        return response.status(200).json({
+          status: 200,
+          message: "User retrieved successfully",
+          data: user.data,
+        });
+      }
+    }
+  }
+
+  async findByRuc(request: Request, response: Response) {
+    const userRucDTO = plainToInstance(CustomerRucDto, request.params);
+    const error = await validate(userRucDTO);
+
+    if (error.length > 0) {
+      return response
+        .status(400)
+        .json({ status: 400, message: "Validation failed", errors: error });
+    } else {
+      const user = await this.application.findByRuc(userRucDTO.ruc);
+
+      if (user.status === 404) {
+        return response
+          .status(404)
+          .json({ status: 404, success: false });
+      } else {
+        return response.status(200).json({
+          status: 200,
+          message: "User retrieved successfully",
+          success: true
+        });
+      }
+    }
+  }
   async delete(request: Request, response: Response) {
     const customerCodeDTO = plainToInstance(CustomerUpdateDTO, request.body);
     const error = await validate(customerCodeDTO);
@@ -114,7 +167,7 @@ export class CustomerGatewayController {
         .json({ status: 400, message: "Validation failed", errors: error });
     } else {
       const customerDeleted = await this.application.delete(
-        customerCodeDTO.code,
+        customerCodeDTO.codigo,
         customerCodeDTO.userUpdated,
       );
       console.log(customerDeleted.status)
@@ -142,7 +195,7 @@ export class CustomerGatewayController {
         .json({ status: 400, message: "Validation failed", errors: error });
     } else {
       const customerUpdated = await this.application.update(
-        customerUpdateDto.code,
+        customerUpdateDto.codigo,
         customerUpdateDto.descripcion,
         customerUpdateDto.ruc,
         customerUpdateDto.direccion,
@@ -151,6 +204,8 @@ export class CustomerGatewayController {
         customerUpdateDto.email,
         customerUpdateDto.telefono,
         customerUpdateDto.status,
+        customerUpdateDto.user,
+        customerUpdateDto.password,
         customerUpdateDto.userUpdated,
       );
       if (customerUpdated.status === 200) {

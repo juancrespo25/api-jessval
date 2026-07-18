@@ -1,8 +1,8 @@
-import { IsNotEmpty, IsString, Length } from "class-validator";
+import { IsNotEmpty, IsString, MinLength } from "class-validator";
 
 export class UserNameDTO {
   @IsNotEmpty()
   @IsString()
-  @Length(10,10)
+  @MinLength(5)
   user_name: string;
 }

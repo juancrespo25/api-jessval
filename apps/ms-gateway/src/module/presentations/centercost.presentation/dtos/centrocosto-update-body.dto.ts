@@ -10,7 +10,7 @@ export class CentroCostoUpdateBodyDTO {
     @IsNotEmpty()
     @IsString()
     @Length(10,10)
-    code?: string
+    codigo?: string
 
     @IsNotEmpty()
     @IsString()
@@ -31,6 +31,14 @@ export class CentroCostoUpdateBodyDTO {
 
     @IsString()
     telefono?: string;
+
+    @IsString()
+    @MinLength(3)
+    user?: string;
+
+    @IsString()
+    @MinLength(3)
+    password?: string;
 
     @IsString()
     @Length(10,10)

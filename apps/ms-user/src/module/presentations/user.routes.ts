@@ -16,8 +16,10 @@ class UserRoutes {
     this.router.get('/', this.controller.findAll.bind(this.controller));
     this.router.get('/:code', this.controller.findById.bind(this.controller));
     this.router.get('/username/:user_name', this.controller.findByUsername.bind(this.controller));
+    this.router.get('/name/:user_name', this.controller.findByName.bind(this.controller));
     this.router.delete('/', this.controller.delete.bind(this.controller));
     this.router.patch('/', this.controller.update.bind(this.controller));
+    this.router.get('/type/:userType', this.controller.findUserType.bind(this.controller));
   }
 }
 

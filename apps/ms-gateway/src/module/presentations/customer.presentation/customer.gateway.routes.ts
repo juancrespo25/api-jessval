@@ -16,6 +16,8 @@ export class CustomerGatewayRoutes {
         this.router.post('/customer', AuthMiddleware.canActivate, this.controller.create.bind(this.controller));
         this.router.get('/customer', AuthMiddleware.canActivate, this.controller.findAll.bind(this.controller));
         this.router.get('/customer/:code', AuthMiddleware.canActivate, this.controller.findById.bind(this.controller));
+        this.router.get('/customer/name/:name', AuthMiddleware.canActivate, this.controller.findByName.bind(this.controller));
+        this.router.get('/customer/ruc/:ruc', AuthMiddleware.canActivate, this.controller.findByRuc.bind(this.controller));
         this.router.delete('/customer', AuthMiddleware.canActivate, this.controller.delete.bind(this.controller));
         this.router.patch('/customer', AuthMiddleware.canActivate, this.controller.update.bind(this.controller));
     }

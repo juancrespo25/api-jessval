@@ -7,8 +7,11 @@ import {
   UserStatusDTO,
   UserDeleteDTO,
   UserUpdateDTO,
+  UserNameDTO,
 } from "./dtos";
 import { validate } from "class-validator";
+import { UserNameLikeDTO } from "./dtos/user-name-like.dto";
+import { UserTypeDTO } from "./dtos/user-type.dto";
 
 export class UserGatewayController {
   constructor(private readonly application: UserGatewayApplication) {}
@@ -78,6 +81,31 @@ export class UserGatewayController {
     }
   }
 
+  async findUserType(request: Request, response: Response) {
+    const userTypeDTO = plainToInstance(UserTypeDTO, request.params);
+    const error = await validate(userTypeDTO);
+
+    if (error.length > 0) {
+      return response
+        .status(400)
+        .json({ status: 400, message: "Validation failed", errors: error });
+    } else {
+      const user = await this.application.findUserType(userTypeDTO.userType);
+
+      if (!user || user.length === 0) {
+        return response
+          .status(404)
+          .json({ status: 404, message: "User not found" });
+      } else {
+        return response.status(200).json({
+          status: 200,
+          message: "User retrieved successfully",
+          data: user,
+        });
+      }
+    }
+  }
+
   async findById(request: Request, response: Response) {
     const userCodeDTO = plainToInstance(UserCodeDTO, request.params);
     const error = await validate(userCodeDTO);
@@ -103,6 +131,30 @@ export class UserGatewayController {
     }
   }
 
+  async findByName(request: Request, response: Response) {
+    const userNameDTO = plainToInstance(UserNameLikeDTO, request.params);
+    const error = await validate(userNameDTO);
+
+    if (error.length > 0) {
+      return response
+        .status(400)
+        .json({ status: 400, message: "Validation failed", errors: error });
+    } else {
+      const user = await this.application.findByName(userNameDTO.name);
+
+      if (!user) {
+        return response
+          .status(404)
+          .json({ status: 404, message: "User not found" });
+      } else {
+        return response.status(200).json({
+          status: 200,
+          message: "User retrieved successfully",
+          data: user.data,
+        });
+      }
+    }
+  }
   async delete(request: Request, response: Response) {
     const userDeleteDTO = plainToInstance(UserDeleteDTO, request.body);
     const error = await validate(userDeleteDTO);

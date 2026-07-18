@@ -1,8 +1,8 @@
-import { DataBaseBootstrapp } from "../../bootstrapp";
-import { IUserPort } from "../ports";
-import { User } from "../applications";
-import { UserEntity } from "./entities";
-import { Repository } from "typeorm";
+import { DataBaseBootstrapp } from '../../bootstrapp';
+import { IUserPort } from '../ports';
+import { User } from '../applications';
+import { UserEntity } from './entities';
+import { Repository } from 'typeorm';
 
 export class UserAdapter implements IUserPort {
   private repository: Repository<UserEntity> | null = null;
@@ -10,7 +10,7 @@ export class UserAdapter implements IUserPort {
   private getRepository(): Repository<UserEntity> {
     if (!this.repository) {
       if (!DataBaseBootstrapp.dataSource) {
-        throw new Error("Database connection not initialized");
+        throw new Error('Database connection not initialized');
       }
       this.repository = DataBaseBootstrapp.dataSource.getRepository(UserEntity);
     }
@@ -67,19 +67,22 @@ export class UserAdapter implements IUserPort {
       },
     });
     if (!users) return [];
-    return users.map((user) => new User({
-      id: user.id,
-      codigo: user.codigo,
-      nombres: user.nombres,
-      apellidos: user.apellidos,
-      email: user.email,
-      telefono: user.telefono,
-      status: user.status,
-      area: user.area,
-      userCreated: user.userCreated,
-      createdAt: user.createdAt,
-      userUpdated: user.userUpdated,
-    })); // Ajustar para incluir descripcion si es necesario
+    return users.map(
+      (user) =>
+        new User({
+          id: user.id,
+          codigo: user.codigo,
+          nombres: user.nombres,
+          apellidos: user.apellidos,
+          email: user.email,
+          telefono: user.telefono,
+          status: user.status,
+          area: user.area,
+          userCreated: user.userCreated,
+          createdAt: user.createdAt,
+          userUpdated: user.userUpdated,
+        }),
+    );
   }
   async findById(code: string): Promise<User | null> {
     const user = await this.getRepository().findOne({
@@ -114,7 +117,7 @@ export class UserAdapter implements IUserPort {
     });
   }
 
- async findByUsername(username: string): Promise<User> {
+  async findByUsername(username: string): Promise<User> {
     const user = await this.getRepository().findOne({
       select: {
         id: true,
@@ -124,7 +127,7 @@ export class UserAdapter implements IUserPort {
         email: true,
         telefono: true,
         status: true,
-        password: true
+        password: true,
       },
       where: { user_name: username },
     });
@@ -146,39 +149,62 @@ export class UserAdapter implements IUserPort {
   }
   async findByName(name: string): Promise<User[]> {
     const users = await this.getRepository()
-      .createQueryBuilder("user")
+      .createQueryBuilder('user')
       .select([
-        "user.id",
-        "user.codigo",
-        "user.nombres",
-        "user.apellidos",
-        "user.email",
-        "user.telefono",
-        "user.status",
-        "user.area",
-        "user.userCreated",
-        "user.createdAt",
-        "user.userUpdated",
+        'user.id',
+        'user.codigo',
+        'user.nombres',
+        'user.apellidos',
+        'user.email',
+        'user.telefono',
+        'user.status',
+        'user.area',
+        'user.userCreated',
+        'user.createdAt',
+        'user.userUpdated',
       ])
-      .where("UPPER(user.nombres) LIKE :name OR UPPER(user.apellidos) LIKE :name", {
+      .where('UPPER(user.nombres) LIKE :name OR UPPER(user.apellidos) LIKE :name', {
         name: `%${name.toUpperCase()}%`,
       })
       .getMany();
     if (!users || users.length === 0) return [];
-    return users.map((user) => new User({
-      id: user.id,
-      codigo: user.codigo,
-      nombres: user.nombres,
-      apellidos: user.apellidos,
-      email: user.email,
-      telefono: user.telefono,
-      status: user.status,
-      area: user.area,
-      userCreated: user.userCreated,
-      createdAt: user.createdAt,
-      userUpdated: user.userUpdated,
-    }));
+    return users.map(
+      (user) =>
+        new User({
+          id: user.id,
+          codigo: user.codigo,
+          nombres: user.nombres,
+          apellidos: user.apellidos,
+          email: user.email,
+          telefono: user.telefono,
+          status: user.status,
+          area: user.area,
+          userCreated: user.userCreated,
+          createdAt: user.createdAt,
+          userUpdated: user.userUpdated,
+        }),
+    );
   }
+
+  async findUserType(userType: string): Promise<User[]> {
+    const users = await this.getRepository().find({
+      where: { area: userType },
+      select: {
+        codigo: true,
+        nombres: true,
+        apellidos: true,
+      },
+    });
+    if (!users || users.length === 0) return [];
+    return users.map(
+      (user) =>
+        new User({
+          codigo: user.codigo,
+          nombre_completo: `${user.nombres} ${user.apellidos}`
+        }),
+    );
+  }
+
   async update(user: User): Promise<User> {
     const {
       codigo,
@@ -210,10 +236,7 @@ export class UserAdapter implements IUserPort {
       updatedAt: new Date(),
     });
 
-    const updatedEntity = await this.getRepository().update(
-      { id: result.id },
-      result,
-    );
+    const updatedEntity = await this.getRepository().update({ id: result.id }, result);
 
     if (updatedEntity.affected === 0) return null;
 

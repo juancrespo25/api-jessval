@@ -1,7 +1,10 @@
 ms-gateway: 4000
 ms-auth: 4001
 ms-customer: 4002
-ms-area: 4003
+ms-resource: 4003
 ms-user: 4004
-ms-centrocosto:4005
+ms-centrocosto: 4005
+ms-operaciones: 4006
+ms-reportes: 4007
+ms-facturacion: 4008
 

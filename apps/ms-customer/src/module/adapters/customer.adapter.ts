@@ -29,6 +29,8 @@ export class CustomerAdapter implements ICustomerPort {
       email,
       telefono,
       status,
+      user,
+      password,
       userCreated,
     } = customer.properties;
 
@@ -43,6 +45,8 @@ export class CustomerAdapter implements ICustomerPort {
       email,
       telefono,
       status,
+      user,
+      password,
       userCreated,
     });
 
@@ -66,6 +70,8 @@ export class CustomerAdapter implements ICustomerPort {
         email: true,
         telefono: true,
         status: true,
+        user: true,
+        password: true,
         userCreated: true,
         createdAt: true,
         userUpdated: true,
@@ -83,6 +89,8 @@ export class CustomerAdapter implements ICustomerPort {
       email: customer.email,
       telefono: customer.telefono,
       status: customer.status,
+      user: customer.user,
+      password: customer.password,
       userCreated: customer.userCreated,
       createdAt: customer.createdAt,
       userUpdated: customer.userUpdated,
@@ -103,6 +111,8 @@ export class CustomerAdapter implements ICustomerPort {
         email: true,
         telefono: true,
         status: true,
+        user: true,
+        password: true,
         userCreated: true,
         createdAt: true,
         userUpdated: true,
@@ -121,6 +131,8 @@ export class CustomerAdapter implements ICustomerPort {
       email: customer.email,
       telefono: customer.telefono,
       status: customer.status,
+      user: customer.user,
+      password: customer.password,
       userCreated: customer.userCreated,
       createdAt: customer.createdAt,
       userUpdated: customer.userUpdated,
@@ -143,6 +155,8 @@ export class CustomerAdapter implements ICustomerPort {
         "customer.email",
         "customer.telefono",
         "customer.status",
+        "customer.user",
+        "customer.password",
         "customer.userCreated",
         "customer.createdAt",
         "customer.userUpdated",
@@ -163,10 +177,18 @@ export class CustomerAdapter implements ICustomerPort {
       email: customer.email,
       telefono: customer.telefono,
       status: customer.status,
+      user: customer.user,
+      password: customer.password,
       userCreated: customer.userCreated,
       createdAt: customer.createdAt,
       userUpdated: customer.userUpdated,
     }));
+  }
+
+  async findRuc(ruc: string): Promise<boolean> {
+    const customer = await this.getRepository().findOne({ where: { ruc: ruc } });
+    if(!customer) return false
+    return true;
   }
   async update(customer: Customer): Promise<Customer> {
 
@@ -180,6 +202,8 @@ export class CustomerAdapter implements ICustomerPort {
       email,
       telefono,
       status,
+      user,
+      password,
       userUpdated,
     } = customer.properties;
     const result = await this.getRepository().findOne({ where: { codigo: codigo } });
@@ -195,6 +219,8 @@ export class CustomerAdapter implements ICustomerPort {
       email,
       telefono,
       status,
+      user,
+      password,
       userUpdated,
       updatedAt: new Date(),
     });
@@ -213,6 +239,8 @@ export class CustomerAdapter implements ICustomerPort {
       email: result.email,
       telefono: result.telefono,
       status: result.status,
+      user: result.user,
+      password: result.password,
       userUpdated: result.userUpdated,
       updatedAt: result.updatedAt,
     });

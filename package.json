@@ -16,7 +16,9 @@
   "main": "index.js",
   "scripts": {
     "build": "turbo run build",
-    "start:dev": "turbo run start:dev"
+    "start:dev": "turbo run start:dev",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "workspaces": [
     "apps/*",
@@ -32,7 +34,6 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.4",
     "cors": "^2.8.5",
-    "exceljs": "^4.4.0",
     "jsonwebtoken": "^9.0.2",
     "node-path": "^0.0.3",
     "pg": "^8.20.0",
@@ -46,6 +47,12 @@
     "@types/cors": "^2.8.19",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.5.0",
+    "prettier": "^3.8.3",
     "turbo": "^2.9.0"
+  },
+  "overrides": {
+    "typeorm": {
+      "glob": "^13.0.6"
+    }
   }
 }

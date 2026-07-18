@@ -9,6 +9,8 @@ export class CenterCostGatewayAdapter implements CenterCostGatewayPort {
     contacto: string,
     email: string,
     telefono: string,
+    user: string,
+    password: string,
     userCreated: string,
   ): Promise<any> {
     try {
@@ -24,6 +26,8 @@ export class CenterCostGatewayAdapter implements CenterCostGatewayPort {
           contacto,
           email,
           telefono,
+          user,
+          password,
           userCreated,
         }),
       });
@@ -34,11 +38,11 @@ export class CenterCostGatewayAdapter implements CenterCostGatewayPort {
     }
   }
 
-  async findAll(status: boolean): Promise<any> {
+  async findAll(customer: string, status: boolean): Promise<any> {
     try {
       const url = new URL(env.URL_CENTERCOST);
       url.searchParams.append("status", status.toString());
-
+      url.searchParams.append("customer", customer);
       const response = await fetch(url.toString(), {
         method: "GET",
         headers: {
@@ -66,13 +70,16 @@ export class CenterCostGatewayAdapter implements CenterCostGatewayPort {
       throw new Error("Failed to connect to centercost service");
     }
   }
-  async findByName(name: string): Promise<any> {
+  async findByName(name: string, customer: string): Promise<any> {
     try {
-        const result = await fetch(`${env.URL_CENTERCOST}/name/${name}`, {
-            method: 'GET',
+        const result = await fetch(`${env.URL_CENTERCOST}/name`, {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
+        body: JSON.stringify({
+          name,
+          customer}),
         });
 
         return await result.json();
@@ -89,6 +96,8 @@ export class CenterCostGatewayAdapter implements CenterCostGatewayPort {
     contacto: string,
     email: string,
     telefono: string,
+    user: string,
+    password: string,
     userUpdated: string,
   ): Promise<any> {
     try {
@@ -98,7 +107,7 @@ export class CenterCostGatewayAdapter implements CenterCostGatewayPort {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ descripcion, codigo, cliente, status, contacto, email, telefono, userUpdated }),
+            body: JSON.stringify({ descripcion, codigo, cliente, status, contacto, email, telefono, user, password, userUpdated }),
         });
 
         return await response.json();

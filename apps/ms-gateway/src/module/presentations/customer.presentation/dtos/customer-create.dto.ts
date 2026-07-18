@@ -13,7 +13,7 @@ export class CustomerCreateDTO {
     ruc: string;
 
     @IsString()
-    @MinLength(10)
+    @MinLength(5)
     direccion: string;
 
     @IsNotEmpty()
@@ -22,7 +22,7 @@ export class CustomerCreateDTO {
     ubigeo: string;
 
     @IsString()
-    @MinLength(10)
+    @MinLength(3)
     contacto?: string;
 
     @IsEmail()
@@ -34,6 +34,14 @@ export class CustomerCreateDTO {
     @IsNotEmpty()
     @IsBoolean()
     status?: boolean;
+
+    @IsString()
+    @MinLength(3)
+    user?: string;
+
+    @IsString()
+    @MinLength(3)
+    password?: string;
 
     @IsString()
     @Length(10,10)

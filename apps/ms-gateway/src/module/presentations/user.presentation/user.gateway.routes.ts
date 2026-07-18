@@ -15,7 +15,9 @@ export class UserGatewayRoutes {
     private mountRoutes(){
         this.router.post('/user', AuthMiddleware.canActivate, this.controller.create.bind(this.controller));
         this.router.get('/user', AuthMiddleware.canActivate, this.controller.findAll.bind(this.controller));
+        this.router.get('/user/type/:userType', AuthMiddleware.canActivate, this.controller.findUserType.bind(this.controller));
         this.router.get('/user/:code', AuthMiddleware.canActivate, this.controller.findById.bind(this.controller));
+        this.router.get('/user/name/:name', AuthMiddleware.canActivate, this.controller.findByName.bind(this.controller));
         this.router.delete('/user', AuthMiddleware.canActivate, this.controller.delete.bind(this.controller));
         this.router.patch('/user', AuthMiddleware.canActivate, this.controller.update.bind(this.controller));
     }

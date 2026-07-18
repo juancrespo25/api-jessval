@@ -27,6 +27,12 @@ export class CentroCostoEntity {
     @Column({ type: "varchar", length: 30, nullable: true })
     telefono!: string;
 
+    @Column({ type: "varchar", length: 50, nullable: true })
+    user!: string;
+
+    @Column({ type: "varchar", length: 250, nullable: true })
+    password!: string;
+
     @Column({ type: "char", length: 10, nullable: true })
     userCreated!: string;
 

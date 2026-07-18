@@ -8,4 +8,5 @@ export interface IUserPort {
     findByName(name: string): Promise<User[]>;
     update(user: User): Promise<User>;
     delete(code: string, userUpdate: string): Promise<boolean>;
+    findUserType(userType: string): Promise<User[]>;
 }

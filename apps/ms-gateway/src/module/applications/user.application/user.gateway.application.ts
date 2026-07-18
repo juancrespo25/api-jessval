@@ -12,12 +12,20 @@ export class UserGatewayApplication {
         return await this.port.findAll(status);
     }
 
+    async findUserType(userType: string): Promise<any> {
+        return await this.port.findUserType(userType);
+    }
+
     async findById(code: string): Promise<any> {
         return await this.port.findById(code);
     }
 
     async findByUsername(username: string): Promise<any> {
         return await this.port.findByUsername(username);
+    }
+
+    async findByName(name: string): Promise<any> {
+        return await this.port.findByName(name);
     }
 
     async delete(code: string, userDeleted: string): Promise<any> {

@@ -9,6 +9,7 @@ import {
   CentroCostoCodeDTO,
   CentroCostoUpdateBodyDTO,
   CentroCostoUpdateDTO,
+  CentroCostoNameDTO,
 } from "./dto";
 
 export class CentroCostoController {
@@ -43,6 +44,7 @@ export class CentroCostoController {
 
   async findAll(req: Request, res: Response) {
     const statusParam = req.query.status as string;
+    const customer = req.query.customer as string;
     const status =
       statusParam === "true"
         ? true
@@ -50,7 +52,7 @@ export class CentroCostoController {
           ? false
           : undefined;
 
-    const centroCostoStatus = plainToInstance(CentroCostoStatusDTO, { status });
+    const centroCostoStatus = plainToInstance(CentroCostoStatusDTO, { customer, status });
 
     const error = await validate(centroCostoStatus);
 
@@ -63,7 +65,7 @@ export class CentroCostoController {
           "Invalid status query parameter. It should be 'true' or 'false'.",
       });
     } else {
-      const centroCostos = await this.application.findAll(status);
+      const centroCostos = await this.application.findAll(customer, status);
       return res.status(200).json({
         status: 200,
         success: true,
@@ -100,6 +102,40 @@ export class CentroCostoController {
           success: true,
           message: "CentroCosto retrieved successfully",
           data: centroCosto,
+        });
+      }
+    }
+  }
+
+  async findByName(req: Request, res: Response) {
+    const centroCostoNameDTO = plainToInstance(CentroCostoNameDTO, req.body);
+    const error = await validate(centroCostoNameDTO);
+    console.log(centroCostoNameDTO);
+    if (error.length > 1) {
+      return res.status(400).json({
+        status: 400,
+        success: false,
+        message: "Validation failed",
+        errors: error,
+      });
+    } else {
+      const centroCostos = await this.application.findByName(
+        centroCostoNameDTO.name,
+        centroCostoNameDTO.customer,
+      );
+
+      if (!centroCostos) {
+        return res.status(404).json({
+          status: 404,
+          success: false,
+          message: "CentroCostos not found",
+        });
+      } else {
+        return res.status(200).json({
+          status: 200,
+          success: true,
+          message: "CentroCostos retrieved successfully",
+          data: centroCostos,
         });
       }
     }

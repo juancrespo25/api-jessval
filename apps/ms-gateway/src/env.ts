@@ -9,6 +9,8 @@ const envSchema = z.object({
     URL_AUTH: z.string().default("localhost"),
     URL_CUSTOMER: z.string().default("localhost"),
     URL_CENTERCOST: z.string().default("localhost"),
+    URL_UBIGEO: z.string().default("localhost"),
+    URL_PROVINCE: z.string().default("localhost"),
 });
 
 type EnvSchema = z.infer<typeof envSchema>;

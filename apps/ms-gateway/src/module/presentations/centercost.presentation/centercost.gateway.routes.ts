@@ -16,6 +16,7 @@ export class CenterCostGatewayRoutes{
         this.router.post('/centercost', AuthMiddleware.canActivate, this.controller.create.bind(this.controller));
         this.router.get('/centercost', AuthMiddleware.canActivate, this.controller.findAll.bind(this.controller));
         this.router.get('/centercost/:code', AuthMiddleware.canActivate, this.controller.findById.bind(this.controller));
+        this.router.post('/centercost/name', AuthMiddleware.canActivate, this.controller.findByName.bind(this.controller));
         this.router.delete('/centercost', AuthMiddleware.canActivate, this.controller.delete.bind(this.controller));
         this.router.patch('/centercost', AuthMiddleware.canActivate, this.controller.update.bind(this.controller));
     }

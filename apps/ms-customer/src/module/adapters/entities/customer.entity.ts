@@ -32,6 +32,12 @@ export class CustomerEntity {
     @Column({ type: "boolean", nullable: true })
     status!: boolean;
 
+    @Column({ type: "varchar", length: 50, nullable: true })
+    user!: string;
+
+    @Column({ type: "varchar", length: 250, nullable: true })
+    password!: string;
+
     @Column({ type: "char", length: 10, nullable: true })
     userCreated!: string;
 

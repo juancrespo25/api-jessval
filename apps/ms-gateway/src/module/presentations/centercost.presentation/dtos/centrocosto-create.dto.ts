@@ -27,6 +27,14 @@ export class CentroCostoCreateDTO {
     telefono?: string;
 
     @IsString()
+    @MinLength(3)
+    user?: string;
+
+    @IsString()
+    @MinLength(3)
+    password?: string;
+
+    @IsString()
     @Length(10,10)
     userCreated?: string;
 }

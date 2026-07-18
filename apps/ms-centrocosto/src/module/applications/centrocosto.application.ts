@@ -9,8 +9,8 @@ export class CentroCostoApplication {
         return await this.centroCostoPort.create(centroCosto);
     }
 
-    async findAll(status?: boolean): Promise<CentroCosto[]> {
-        return await this.centroCostoPort.findAll(status);
+    async findAll(customer: string, status?: boolean): Promise<CentroCosto[]> {
+        return await this.centroCostoPort.findAll(customer, status);
     }
 
     async findById(code: string): Promise<CentroCosto | null> {
@@ -25,8 +25,7 @@ export class CentroCostoApplication {
         return this.centroCostoPort.delete(code, userUpdate);
     }
 
-    async findByName(name: string): Promise<CentroCosto[]> {
-        return await this.centroCostoPort.findByName(name);
+    async findByName(name: string, customer: string): Promise<CentroCosto[]> {
+        return await this.centroCostoPort.findByName(name, customer);
     }
-
 }

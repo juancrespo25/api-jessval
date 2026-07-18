@@ -10,7 +10,7 @@ export class CustomerUpdateDTO {
   @IsNotEmpty()
   @IsString()
   @Length(10,10)
-  code: string;
+  codigo: string;
 
   @IsNotEmpty()
   @IsString()

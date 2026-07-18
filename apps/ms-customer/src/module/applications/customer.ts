@@ -9,6 +9,8 @@ export type CustomerProps = {
     email?: string;
     telefono?: string;
     status?: boolean;
+    user?: string;
+    password?: string;
     userCreated?: string;
     createdAt?: Date;
     userUpdated?: string;
@@ -26,6 +28,8 @@ export class Customer {
     private readonly email?: string;
     private readonly telefono?: string;
     private readonly status?: boolean;
+    private readonly user?: string;
+    private readonly password?: string;
     private readonly userCreated?: string;
     private readonly createdAt?: Date;
     private readonly userUpdated?: string;
@@ -47,6 +51,8 @@ export class Customer {
             email: this.email,
             telefono: this.telefono,
             status: this.status,
+            user: this.user,
+            password: this.password,
             userCreated: this.userCreated,
             createdAt: this.createdAt,
             userUpdated: this.userUpdated,

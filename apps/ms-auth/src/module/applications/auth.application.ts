@@ -15,10 +15,10 @@ export class AuthApplication implements IAuthPort {
             return null;
         }
 
-        const { nombres, apellidos, email } = data;
+        const { nombres, apellidos, email, codigo } = data;
 
         if (await AuthService.compareToPassword(auth.properties.password, data.password)) {
-            const token = await AuthService.generateAccessToken(nombres, apellidos, email );
+            const token = await AuthService.generateAccessToken(nombres, apellidos, email, codigo );
             return token;
         }else{
             return null;

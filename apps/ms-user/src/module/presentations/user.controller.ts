@@ -7,7 +7,10 @@ import {
   UserDeleteDTO,
   UserUpdateDTO,
   UserNameDTO,
-  UserStatusDTO} from "./dto";
+  UserStatusDTO,
+  UserDTO,
+  UserTypeDTO
+} from "./dto";
 import { validate } from "class-validator";
 import { UserService } from "./user.service";
 
@@ -67,6 +70,7 @@ export class UserController {
         status: 200,
         success: true,
         message: "Users retrieved successfully",
+        count: users.length,
         data: users,
       });
     }
@@ -74,7 +78,7 @@ export class UserController {
 
   async findById(req: Request, res: Response) {
     const userCodeDTO = plainToInstance(UserCodeDTO, req.params);
-   
+
     const error = await validate(userCodeDTO);
     if (error.length > 0) {
       return res.status(400).json({
@@ -104,7 +108,7 @@ export class UserController {
   async findByUsername(req: Request, res: Response) {
     const userNameDTO = plainToInstance(UserNameDTO, req.params);
     const error = await validate(userNameDTO);
-
+    console.log(userNameDTO);
     if (error.length > 0) {
       return res.status(400).json({
         status: 400,
@@ -123,13 +127,70 @@ export class UserController {
     }
   }
 
-  async delete(req: Request, res: Response) {
+  async findByName(req: Request, res: Response) {
+    const userNameDTO = plainToInstance(UserDTO, req.params);
+    const error = await validate(userNameDTO);
+    console.log(userNameDTO);
+    if (error.length > 0) {
+      return res.status(400).json({
+        status: 400,
+        success: false,
+        message: "Username parameter is required",
+        errors: error,
+      });
+    } else {
+      const user = await this.application.findByName(userNameDTO.user_name);
 
-    console.log(req.body);
+      if (!user || user.length === 0) {
+        return res.status(404).json({
+          status: 404,
+          success: false,
+          message: "User not found",
+        });
+      }
+      return res.status(200).json({
+        status: 200,
+        success: true,
+        message: "User retrieved successfully",
+        data: user,
+      });
+    }
+  }
+
+  async findUserType(req: Request, res: Response) {
+    const userTypeDTO = plainToInstance(UserTypeDTO, req.params);
+    const error = await validate(userTypeDTO);
+    console.log(userTypeDTO);
+    if (error.length > 0) {
+      return res.status(400).json({
+        status: 400,
+        success: false,
+        message: "User type parameter is required",
+        errors: error,
+      });
+    } else {
+      const user = await this.application.findUserType(userTypeDTO.userType);
+      if (!user || user.length === 0) {
+        return res.status(404).json({
+          status: 404,
+          success: false,
+          message: "User not found",
+        });
+      }
+      return res.status(200).json({
+        status: 200,
+        success: true,
+        message: "User retrieved successfully",
+        data: user,
+      });
+    }
+  }
+
+  async delete(req: Request, res: Response) {
     const userDeleteDTO = plainToInstance(UserDeleteDTO, req.body);
     const error = await validate(userDeleteDTO);
     if (error.length > 0) {
-       console.log(0);
+      console.log(0);
       return res.status(400).json({
         status: 400,
         success: false,

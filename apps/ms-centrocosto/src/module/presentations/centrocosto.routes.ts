@@ -18,7 +18,7 @@ class CentroCostoRoutes {
         this.router.get('/:code', this.controller.findById.bind(this.controller));
         this.router.delete('/', this.controller.delete.bind(this.controller));
         this.router.patch('/', this.controller.update.bind(this.controller));
-        //this.router.get('/name/:name', this.controller.findByName.bind(this.controller));
+        this.router.post('/name', this.controller.findByName.bind(this.controller));
     }
 }
 

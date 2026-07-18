@@ -1,0 +1,20 @@
+
+services:
+  system-ms-auth:
+    image: juancrespo25/ms-auth-app
+    container_name: system-ms-auth
+    environment:
+      PORT: ${PORT}
+      HOST: ${HOST}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
+      SERVICE_NAME_USER: ${SERVICE_NAME_USER}
+    restart: always
+    ports:
+      - "4001:4001"
+    networks:
+      - system-network
+
+networks:
+  system-network:
+    external: true

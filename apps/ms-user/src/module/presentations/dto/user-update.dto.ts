@@ -37,7 +37,7 @@ export class UserUpdateDTO {
 
     @IsNotEmpty()
     @IsString()
-    @Length(10,10)
+    @MinLength(5)
     user_name: string;
 
     @IsNotEmpty()

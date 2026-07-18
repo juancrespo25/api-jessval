@@ -2,7 +2,7 @@
 import { User } from './user';
 
 export class UserApplication {
-    
+
     constructor(private readonly repository: IUserPort) {}
 
     async create(user: User): Promise<User> {
@@ -23,6 +23,10 @@ export class UserApplication {
 
     async findByName(name: string): Promise<User[]> {
         return await this.repository.findByName(name);
+    }
+
+    async findUserType(userType: string): Promise<User[]> {
+        return await this.repository.findUserType(userType);
     }
 
     async update(user: User): Promise<User> {

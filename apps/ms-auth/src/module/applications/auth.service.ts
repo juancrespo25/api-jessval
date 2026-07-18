@@ -4,10 +4,10 @@ import bcrypt from 'bcrypt';
 
 export class AuthService {
 
-    static async generateAccessToken(nombres: string, apellidos: string, email: string) {
+    static async generateAccessToken(nombres: string, apellidos: string, email: string, codigo: string) {
 
         return jwt.sign(
-            { nombres, apellidos, email },
+            { nombres, apellidos, email, codigo },
             env.JWT_SECRET,
             { expiresIn: env.JWT_EXPIRES_IN } as jwt.SignOptions
         );

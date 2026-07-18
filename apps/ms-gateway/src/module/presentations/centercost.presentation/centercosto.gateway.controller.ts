@@ -9,6 +9,7 @@ import {
   CentroCostoUpdateDTO,
 } from "./dtos";
 import { validate } from "class-validator";
+import { CentroCostoNameDTO } from "./dtos/centrocosto-name.dto";
 
 export class CentroCostoGatewayController {
   constructor(private readonly application: CenterCostGatewayApplication) {}
@@ -32,6 +33,8 @@ export class CentroCostoGatewayController {
         centroCostoCreateDTO.contacto,
         centroCostoCreateDTO.email,
         centroCostoCreateDTO.telefono,
+        centroCostoCreateDTO.user,
+        centroCostoCreateDTO.password,
         centroCostoCreateDTO.userCreated,
       );
       if (centroCostoCreated.status === 201) {
@@ -50,6 +53,7 @@ export class CentroCostoGatewayController {
 
   async findAll(request: Request, response: Response) {
     const statusParam = request.query.status as string;
+    const customer = request.query.customer as string
     const status =
       statusParam === "true"
         ? true
@@ -57,7 +61,7 @@ export class CentroCostoGatewayController {
           ? false
           : undefined;
 
-    const centroCostoStatus = plainToInstance(CentroCostoStatusDTO, { status });
+    const centroCostoStatus = plainToInstance(CentroCostoStatusDTO, {customer, status });
     const error = await validate(centroCostoStatus);
 
     if (error.length > 0 || status === undefined) {
@@ -65,7 +69,7 @@ export class CentroCostoGatewayController {
         .status(400)
         .json({ status: 400, message: "Validation failed", errors: error });
     } else {
-      const centroCostos = await this.application.findAll(status);
+      const centroCostos = await this.application.findAll(customer, status);
       if (centroCostos.status === 200) {
         return response.status(200).json({
           status: 200,
@@ -95,6 +99,41 @@ export class CentroCostoGatewayController {
       const centroCosto = await this.application.findById(
         centroCostoCodeDTO.code,
       );
+      if (centroCosto.status === 200) {
+        return response.status(200).json({
+          status: 200,
+          message: "CentroCosto retrieved successfully",
+          data: centroCosto.data,
+        });
+      } else {
+        return response
+          .status(401)
+          .json({ status: 401, message: "Invalid credentials" });
+      }
+    }
+  }
+
+  async findByName(request: Request, response: Response) {
+    console.log(request.body);
+    const centroCostoNameDTO = plainToInstance(
+      CentroCostoNameDTO,
+      request.body,
+    );
+    console.log(centroCostoNameDTO);
+    const error = await validate(centroCostoNameDTO);
+
+    if(error.length > 0){
+      console.log(1);
+      return response
+        .status(400)
+        .json({ status: 400, message: "Validation failed", errors: error });
+    }else{
+      const centroCosto = await this.application.findByName(
+        centroCostoNameDTO.name,
+        centroCostoNameDTO.customer
+      );
+      console.log(2);
+      console.log(centroCosto.status);
       if (centroCosto.status === 200) {
         return response.status(200).json({
           status: 200,
@@ -154,12 +193,14 @@ export class CentroCostoGatewayController {
     }else{
       const centroCostoUpdated = await this.application.update(
         centroCostoUpdateBodyDTO.descripcion,
-        centroCostoUpdateBodyDTO.code,
+        centroCostoUpdateBodyDTO.codigo,
         centroCostoUpdateBodyDTO.cliente,
         centroCostoUpdateBodyDTO.status,
         centroCostoUpdateBodyDTO.contacto,
         centroCostoUpdateBodyDTO.email,
         centroCostoUpdateBodyDTO.telefono,
+        centroCostoUpdateBodyDTO.user,
+        centroCostoUpdateBodyDTO.password,
         centroCostoUpdateBodyDTO.userUpdated
       );
       if (centroCostoUpdated.status === 200) {

@@ -11,6 +11,8 @@ export class CustomerGatewayAdapter implements CustomerGatewayPort {
     email: string,
     telefono: string,
     status: boolean,
+    user: string,
+    password: string,
     userCreated: string,
   ): Promise<any> {
     try {
@@ -28,6 +30,8 @@ export class CustomerGatewayAdapter implements CustomerGatewayPort {
           email,
           telefono,
           status,
+          user,
+          password,
           userCreated,
         }),
       });
@@ -93,6 +97,8 @@ export class CustomerGatewayAdapter implements CustomerGatewayPort {
     email: string,
     telefono: string,
     status: boolean,
+    user: string,
+    password: string,
     userUpdated: string,
   ): Promise<any> {
     console.log(env.URL_CUSTOMER)
@@ -103,7 +109,23 @@ export class CustomerGatewayAdapter implements CustomerGatewayPort {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ codigo, descripcion, ruc, direccion, ubigeo, contacto, email, telefono, status, userUpdated }),
+            body: JSON.stringify({ codigo, descripcion, ruc, direccion, ubigeo, contacto, email, telefono, status, user, password, userUpdated }),
+        });
+
+        return await response.json();
+    } catch (error) {
+      console.error("Error connecting to user service:", error);
+      throw new Error("Failed to connect to customer service");
+    }
+  }
+
+  async findByRuc(ruc: string): Promise<any> {
+    try {
+        const response = await fetch(`${env.URL_CUSTOMER}/ruc/${ruc}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
         });
 
         return await response.json();

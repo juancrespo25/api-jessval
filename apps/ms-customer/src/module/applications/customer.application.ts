@@ -16,10 +16,17 @@ export class CustomerApplication {
         return await this.customerPort.findById(code);
     }
 
+    async findByName(name: string): Promise<Customer[]> {
+        return await this.customerPort.findByName(name);
+    }
+
     async update(customer: Customer): Promise<Customer> {
         return await this.customerPort.update(customer);
     }
 
+    async findRuc(ruc: string): Promise<boolean>{
+        return await this.customerPort.findRuc(ruc);
+    }
     async delete(code: string, userUpdate: string): Promise<boolean> {
         return this.customerPort.delete(code, userUpdate);
     }

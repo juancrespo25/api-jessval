@@ -26,6 +26,8 @@ export class CentroCostoAdapter implements ICentroCostoPort {
       contacto,
       email,
       telefono,
+      user,
+      password,
       userCreated,
     } = centroCosto.properties;
 
@@ -38,6 +40,8 @@ export class CentroCostoAdapter implements ICentroCostoPort {
       contacto,
       email,
       telefono,
+      user,
+      password,
       userCreated,
     });
 
@@ -48,24 +52,25 @@ export class CentroCostoAdapter implements ICentroCostoPort {
       createdAt: saveEntity.createdAt,
     });
   }
-  async findAll(status?: boolean): Promise<CentroCosto[]> {
+  async findAll(customer: string, status?: boolean): Promise<CentroCosto[]> {
     const whereClause = status !== undefined ? { status: status } : {};
     const centroCostos = await this.getRepository().find({
-      where: whereClause,
+      where: { ...whereClause, cliente: customer },
       select: {
         id: true,
         descripcion: true,
         codigo: true,
-        cliente: true,
         status: true,
         contacto: true,
         email: true,
         telefono: true,
+        user: true,
+        password: true,
         userCreated: true,
         createdAt: true,
       },
     });
-    
+
     if (!centroCostos) return [];
 
     return centroCostos.map((centroCosto) => new CentroCosto({
@@ -77,6 +82,8 @@ export class CentroCostoAdapter implements ICentroCostoPort {
         contacto: centroCosto.contacto,
         email: centroCosto.email,
         telefono: centroCosto.telefono,
+        user: centroCosto.user,
+        password: centroCosto.password,
         userCreated: centroCosto.userCreated,
         createdAt: centroCosto.createdAt,
     }));
@@ -92,6 +99,8 @@ export class CentroCostoAdapter implements ICentroCostoPort {
         contacto: true,
         email: true,
         telefono: true,
+        user: true,
+        password: true,
         userCreated: true,
         createdAt: true,
       },
@@ -107,15 +116,18 @@ export class CentroCostoAdapter implements ICentroCostoPort {
       contacto: centroCosto.contacto,
       email: centroCosto.email,
       telefono: centroCosto.telefono,
+      user: centroCosto.user,
+      password: centroCosto.password,
       userCreated: centroCosto.userCreated,
       createdAt: centroCosto.createdAt,
     });
   }
-  async findByName(name: string): Promise<CentroCosto[]> {
-    
+  async findByName(name: string, customer: string): Promise<CentroCosto[]> {
+    console.log("customer", customer);
     const centroCosto = await this.getRepository()
     .createQueryBuilder("centrocosto")
-    .where("centrocosto.descripcion ILIKE :name", { name: `%${name.toUpperCase()}%` })
+    .where("centrocosto.cliente = :customer", { customer: customer })
+    .andWhere("UPPER(centrocosto.descripcion) ILIKE :name", { name: `%${name.toUpperCase()}%` })
     .getMany();
     if (!centroCosto || centroCosto.length === 0) return [];
     return centroCosto.map((cc) => new CentroCosto({
@@ -127,6 +139,8 @@ export class CentroCostoAdapter implements ICentroCostoPort {
       contacto: cc.contacto,
       email: cc.email,
       telefono: cc.telefono,
+      user: cc.user,
+      password: cc.password,
       userCreated: cc.userCreated,
       createdAt: cc.createdAt,
     }));
@@ -140,6 +154,8 @@ export class CentroCostoAdapter implements ICentroCostoPort {
       contacto,
       email,
       telefono,
+      user,
+      password,
       userUpdated,
     } = centroCosto.properties;
 
@@ -153,8 +169,10 @@ export class CentroCostoAdapter implements ICentroCostoPort {
       contacto,
       email,
       telefono,
-       userUpdated,
-       updatedAt: new Date(),
+      user,
+      password,
+      userUpdated,
+      updatedAt: new Date(),
     });
 
     const updateEntity = await this.getRepository().update({ id: result.id }, result);
@@ -170,6 +188,8 @@ export class CentroCostoAdapter implements ICentroCostoPort {
       contacto: result.contacto,
       email: result.email,
       telefono: result.telefono,
+      user: result.user,
+      password: result.password,
       userUpdated: result.userUpdated,
       updatedAt: result.updatedAt,
     });

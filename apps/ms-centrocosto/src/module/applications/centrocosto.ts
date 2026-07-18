@@ -7,6 +7,8 @@ export type CentroCostoProps = {
   contacto?: string;
   email?: string;
   telefono?: string;
+  user?: string;
+  password?: string;
   userCreated?: string;
   createdAt?: Date;
   userUpdated?: string;
@@ -23,6 +25,8 @@ export class CentroCosto {
     private readonly contacto?: string;
     private readonly email?: string;
     private readonly telefono?: string;
+    private readonly user?: string;
+    private readonly password?: string;
     private readonly userCreated?: string;
     private readonly createdAt?: Date;
     private readonly userUpdated?: string;
@@ -44,6 +48,8 @@ export class CentroCosto {
         contacto: this.contacto,
         email: this.email,
         telefono: this.telefono,
+        user: this.user,
+        password: this.password,
         userCreated: this.userCreated,
         createdAt: this.createdAt,
         userUpdated: this.userUpdated,
