@@ -1,0 +1,20 @@
+services:
+  system-ms-gateway:
+    image: juancrespo25/ms-gateway-app:latest
+    container_name: system-ms-gateway
+    environment:
+      PORT: ${PORT}
+      HOST: ${HOST}
+      URL_USER: ${URL_USER}
+      URL_AUTH: ${URL_AUTH}
+      URL_CUSTOMER: ${URL_CUSTOMER}
+      URL_CENTERCOST: ${URL_CENTERCOST}
+    restart: always
+    ports:
+      - "4000:4000"
+    networks:
+      - system-network
+
+networks:
+  system-network:
+    external: true

@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import { authRoutes } from './module/presentations/auth.routes';
 
 class App {
 
@@ -17,6 +18,8 @@ class App {
     }
 
     private mountRoutes(){
+
+        this.app.use('/auth', authRoutes);
 
         this.app.get("/health", (req, res) => {
             res.status(200).json({ status: "ok" });

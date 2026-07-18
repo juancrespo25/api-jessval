@@ -1,5 +1,4 @@
 import {
-
   IsNotEmpty,
   IsString,
   Length,
@@ -15,5 +14,5 @@ export class CustomerUpdateDTO {
   @IsNotEmpty()
   @IsString()
   @Length(10,10)
-  userUpdate?: string;
+  userUpdated?: string;
 }

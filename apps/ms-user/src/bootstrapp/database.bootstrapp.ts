@@ -8,18 +8,18 @@ export class DataBaseBootstrapp {
     const options: DataSourceOptions = {
       type: env.DB_TYPE as any || "postgres",
       host: env.DB_HOST || "localhost",
-      port: env.DB_PORT ? Number(env.DB_PORT) : 3306,
+      port: env.DB_PORT ? Number(env.DB_PORT) : 5434,
       username: env.DB_USER || "root",
       password: env.DB_PASS || "",
       database: env.DB_NAME || "test",
       entities: [
-        path.join(__dirname, "../module/adapters/entities/*.entity{.ts,.js}"),
+        path.join(__dirname, "../module/adapters/**/*.entity{.ts,.js}"),
       ],
       migrations: [],
       synchronize: env.DB_SYNC ? env.DB_SYNC === "true" : false,
       logging: env.DB_LOG ? env.DB_LOG === "true" : false,
       extra: {
-        connectionLimit: env.DB_POOL_SIZE ? Number(env.DB_POOL_SIZE) : 5,
+        max: env.DB_POOL_SIZE ? Number(env.DB_POOL_SIZE) : 5,
       },
     };
 

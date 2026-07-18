@@ -1,4 +1,5 @@
 export type CustomerProps = {
+    id?: string;
     descripcion: string;
     codigo: string;
     ruc: string;
@@ -7,13 +8,17 @@ export type CustomerProps = {
     contacto?: string;
     email?: string;
     telefono?: string;
-    activo?: boolean;
+    status?: boolean;
+    user?: string;
+    password?: string;
     userCreated?: string;
     createdAt?: Date;
     userUpdated?: string;
+    updatedAt?: Date;
 }
 
 export class Customer {
+    private readonly id?: string;
     private readonly descripcion!: string;
     private readonly codigo!: string;
     private readonly ruc!: string;
@@ -22,11 +27,13 @@ export class Customer {
     private readonly contacto?: string;
     private readonly email?: string;
     private readonly telefono?: string;
-    private readonly activo?: boolean;
+    private readonly status?: boolean;
+    private readonly user?: string;
+    private readonly password?: string;
     private readonly userCreated?: string;
     private readonly createdAt?: Date;
     private readonly userUpdated?: string;
-
+    private readonly updatedAt?: Date;
 
     constructor(props: CustomerProps) {
         Object.assign(this, props);
@@ -34,6 +41,7 @@ export class Customer {
 
     get properties() {
         return {
+            id: this.id,
             descripcion: this.descripcion,
             codigo: this.codigo,
             ruc: this.ruc,
@@ -42,10 +50,13 @@ export class Customer {
             contacto: this.contacto,
             email: this.email,
             telefono: this.telefono,
-            activo: this.activo,
+            status: this.status,
+            user: this.user,
+            password: this.password,
             userCreated: this.userCreated,
             createdAt: this.createdAt,
             userUpdated: this.userUpdated,
+            updatedAt: this.updatedAt,
         }
     }
 }

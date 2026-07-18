@@ -1,3 +1,5 @@
+import bcrypt from "bcryptjs";
+
 export class CustomerService {
     static generateCode(): string {
         const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
@@ -8,5 +10,9 @@ export class CustomerService {
         }
 
         return `CUS-${digits.slice(0, 6).join('')}`;
+    }
+
+    static async crypt(data: string): Promise<string> {
+        return await bcrypt.hash(data, 10);
     }
 }
