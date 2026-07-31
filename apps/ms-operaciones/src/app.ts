@@ -14,6 +14,7 @@ import { motivoRoutes } from './module/presentations/motivos/motivo.routes';
 import { agenteRoutes } from './module/presentations/agentes';
 import { empresaTransporteRoutes } from './module/presentations/empresatransporte';
 import { despachoRoutes } from './module/presentations/despacho';
+import { guiaDespachoRoutes } from './module/presentations/guiadespacho';
 
 class App {
   readonly app = express();
@@ -52,6 +53,7 @@ class App {
     this.app.use('/agentes', agenteRoutes);
     this.app.use('/empresas-transporte', empresaTransporteRoutes);
     this.app.use('/despacho', despachoRoutes)
+    this.app.use('/guiadespacho', guiaDespachoRoutes);
   }
 }
 

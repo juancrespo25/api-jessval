@@ -1,5 +1,8 @@
+import { GuiaDespachoProps } from "../guiadespacho";
+
 export type DespachoProps = {
   id?: number;
+  guias?: GuiaDespachoProps[];
   agente?: number;
   agente_descripcion?: string;
   tipoenvio?: number;
@@ -15,11 +18,16 @@ export type DespachoProps = {
   updatedAt?: Date | null;
   userAdmit?: string;
   admittedAt?: Date | null;
+  agente_name?: string;
+  etransporte?: string;
+  tenvio_name?: string;
+  provincia?: string;
 }
 
 export class Despacho {
   
   private readonly id?: number;
+  private readonly guias?: GuiaDespachoProps[];
   private readonly agente?: number;
   private readonly agente_descripcion?: string;
   private readonly tipoenvio?: number;
@@ -35,6 +43,10 @@ export class Despacho {
   private readonly updatedAt?: Date | null;
   private readonly userAdmit?: string;
   private readonly admittedAt?: Date | null;
+  private readonly agente_name?: string;
+  private readonly etransporte?: string;
+  private readonly tenvio_name?: string;
+  private readonly provincia?: string;
 
   constructor(props: DespachoProps){
     Object.assign(this, props);
@@ -43,6 +55,7 @@ export class Despacho {
   get Properties() {
     return {
       id: this.id,
+      guias: this.guias,
       agente: this.agente,
       agente_descripcion: this.agente_descripcion,
       tipoenvio: this.tipoenvio,
@@ -57,7 +70,11 @@ export class Despacho {
       userUpdated: this.userUpdated,
       updatedAt: this.updatedAt,
       userAdmit: this.userAdmit,
-      admittedAt: this.admittedAt
+      admittedAt: this.admittedAt,
+      agente_name: this.agente_name,
+      etransporte: this.etransporte,
+      tenvio_name: this.tenvio_name,
+      provincia: this.provincia
     }
   }
 

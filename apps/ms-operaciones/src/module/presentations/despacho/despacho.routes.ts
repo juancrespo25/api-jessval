@@ -11,8 +11,9 @@ class DespachoRoutes {
   }
 
   private mountRoutes() {
-    this.router.get('/', (req, res) => this.despachoController.findAll(req, res));
-    this.router.post('/', (req, res) => this.despachoController.save(req, res));
+    this.router.get('/', this.despachoController.findAll.bind(this.despachoController));
+    this.router.get('/search/:id', this.despachoController.findById.bind(this.despachoController))
+    this.router.post('/',  this.despachoController.save.bind(this.despachoController));
   }
 }
 
