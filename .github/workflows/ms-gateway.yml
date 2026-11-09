@@ -16,13 +16,20 @@ concurrency:
 env:
   IMAGE_NAME: juancrespo25/ms-gateway-app
   APP_PATH: apps/ms-gateway
+  VPS_PATH: /var/docker-file/sistema/app/ms-gateway
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    outputs:
+      image_tag: ${{ steps.tag.outputs.image_tag }}
     steps:
+      - name: Compute image tag
+        id: tag
+        run: echo "image_tag=sha-${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -54,3 +61,28 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha,scope=ms-gateway
           cache-to: type=gha,mode=max,scope=ms-gateway
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to VPS via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: root
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            set -e
+            cd ${{ env.VPS_PATH }}
+
+            # Update only IMAGE_TAG; keep the other variables of the server .env
+            touch .env
+            sed -i '/^IMAGE_TAG=/d' .env
+            [ -n "$(tail -c1 .env)" ] && echo >> .env
+            echo "IMAGE_TAG=${{ needs.build-and-push.outputs.image_tag }}" >> .env
+
+            docker compose -p system pull
+            docker compose -p system up -d
+
+            docker image prune -f
