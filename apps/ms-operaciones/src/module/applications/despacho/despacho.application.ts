@@ -14,4 +14,20 @@ export class DespachoApplication implements IDespachoPort {
   save(despacho: Despacho): Promise<Despacho> {
     return this.despachoPort.save(despacho);
   }
+
+  updateDespacho(despacho: Despacho): Promise<Despacho> {
+    return this.despachoPort.updateDespacho(despacho);
+  }
+
+  updateDespachoStatus(id: number, status: string, userUpdated: string): Promise<Despacho> {
+    return this.despachoPort.updateDespachoStatus(id, status, userUpdated);
+  }
+
+  confirmDespacho(id: number, status: string, userUpdated: string): Promise<Despacho> {
+    return this.despachoPort.confirmDespacho(id, status, userUpdated);
+  }
+
+  generarDespachos(): Promise<true> {
+    return this.despachoPort.generarDespachos();
+  }
 }

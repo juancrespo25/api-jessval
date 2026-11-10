@@ -1,5 +1,31 @@
 import { Exclude } from 'class-transformer';
-import { IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsArray,
+  IsBoolean,
+  IsEnum,
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Matches,
+  MaxLength,
+  ValidateNested,
+} from 'class-validator';
+import { TipoDocumento } from '../../../applications/docadjunto/docadjunto';
+
+class GuiaDocAdjuntoDTO {
+  @IsString()
+  @IsNotEmpty()
+  @Matches(/\S/)
+  @MaxLength(50)
+  numero: string;
+
+  @IsInt()
+  @IsEnum(TipoDocumento)
+  tipo: TipoDocumento;
+}
 
 export class GuiaCreateDTO {
   @IsNotEmpty()
@@ -108,5 +134,11 @@ export class GuiaCreateDTO {
   @IsOptional()
   @IsString()
   userCreated: string;
- 
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => GuiaDocAdjuntoDTO)
+  docadjuntos?: GuiaDocAdjuntoDTO[];
+
 }

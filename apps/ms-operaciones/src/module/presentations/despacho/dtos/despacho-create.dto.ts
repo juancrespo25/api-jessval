@@ -30,6 +30,10 @@ export class DespachoCreateDto {
   @Type(() => Date)
   fecha_creacion: Date;
 
+  @IsNumber()
+  @Type(() => Number)
+  tipo: number;
+
   @IsNotEmpty()
   @IsString()
   @Length(10, 10)

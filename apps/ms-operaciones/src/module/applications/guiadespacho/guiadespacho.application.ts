@@ -7,4 +7,8 @@ export class GuiaDespachoApplication implements IGuiaDespachoPort {
   async addGuia(guiaDespacho: GuiaDespacho): Promise<GuiaDespacho> {
     return await this.guiaDespachoPort.addGuia(guiaDespacho);
   }
+
+  async validate(guia: number): Promise<GuiaDespacho> {
+    return await this.guiaDespachoPort.validate(guia);
+  }
 }

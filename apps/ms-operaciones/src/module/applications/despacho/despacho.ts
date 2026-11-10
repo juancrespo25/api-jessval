@@ -22,10 +22,12 @@ export type DespachoProps = {
   etransporte?: string;
   tenvio_name?: string;
   provincia?: string;
+  provincia_code?: string;
+  tipo?: number;
 }
 
 export class Despacho {
-  
+
   private readonly id?: number;
   private readonly guias?: GuiaDespachoProps[];
   private readonly agente?: number;
@@ -47,6 +49,8 @@ export class Despacho {
   private readonly etransporte?: string;
   private readonly tenvio_name?: string;
   private readonly provincia?: string;
+  private readonly provincia_code?: string;
+  private readonly tipo?: number;
 
   constructor(props: DespachoProps){
     Object.assign(this, props);
@@ -74,7 +78,9 @@ export class Despacho {
       agente_name: this.agente_name,
       etransporte: this.etransporte,
       tenvio_name: this.tenvio_name,
-      provincia: this.provincia
+      provincia: this.provincia,
+      provincia_code: this.provincia_code,
+      tipo: this.tipo
     }
   }
 

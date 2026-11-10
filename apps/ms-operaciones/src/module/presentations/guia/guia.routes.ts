@@ -14,6 +14,7 @@ class GuiaRoutes {
   private mountRoutes() {
     this.router.post('/', this.controller.create.bind(this.controller));
     this.router.get('/validate/:id_guia', this.controller.validateGuia.bind(this.controller));
+    this.router.get('/validateGuiaProvincia/:id_guia', this.controller.validateGuiaProvincia.bind(this.controller));
   }
 }
 

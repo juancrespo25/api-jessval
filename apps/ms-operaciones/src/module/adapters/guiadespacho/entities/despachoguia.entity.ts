@@ -18,11 +18,11 @@ export class GuiaDespachoEntity {
   id_guia: number;
 
   @Column({ type: 'char', length: 2 })
-  estado: string; 
+  estado: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
-  @Column({ type: 'varchar', length: 255 })
-  userCreated: string;
+  @Column({ type: 'char', length: 10, nullable: true })
+  userCreated?: string;
 }

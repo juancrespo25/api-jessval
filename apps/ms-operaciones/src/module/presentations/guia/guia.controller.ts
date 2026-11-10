@@ -70,6 +70,37 @@ export class GuiaController {
         });
       }
     }
-
   }
+
+    async validateGuiaProvincia(req: Request, res: Response) {
+
+    const guia = plainToInstance(GuiaValidate, { id_guia: Number(req.params.id_guia) });
+    const error = await validate(guia);
+
+    if (error.length > 0) {
+      return res.status(400).json({
+        status: 400,
+        success: false,
+        message: "Validation failed",
+        errors: error,
+      });
+    }else{
+      const guiaValidated = await this.guiaApplication.validateGuiaProvincia(guia.id_guia);
+      if(guiaValidated){
+        return res.status(200).json({
+          status: 200,
+          success: true,
+          message: "Guia validated",
+          data: guiaValidated,
+        });
+      }else {
+        return res.status(500).json({
+          status: 500,
+          success: false,
+          message: "Guia not validated",
+        });
+      }
+    }
+  }
+
 }
