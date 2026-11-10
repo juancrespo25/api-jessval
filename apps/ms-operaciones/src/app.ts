@@ -15,6 +15,8 @@ import { agenteRoutes } from './module/presentations/agentes';
 import { empresaTransporteRoutes } from './module/presentations/empresatransporte';
 import { despachoRoutes } from './module/presentations/despacho';
 import { guiaDespachoRoutes } from './module/presentations/guiadespacho';
+import { guiaDescargaRoutes } from './module/presentations/guiadescarga';
+import { docAdjuntoRoutes } from './module/presentations/docadjunto';
 
 class App {
   readonly app = express();
@@ -54,6 +56,8 @@ class App {
     this.app.use('/empresas-transporte', empresaTransporteRoutes);
     this.app.use('/despacho', despachoRoutes)
     this.app.use('/guiadespacho', guiaDespachoRoutes);
+    this.app.use('/guiadescarga', guiaDescargaRoutes);
+    this.app.use('/docadjuntos', docAdjuntoRoutes);
   }
 }
 

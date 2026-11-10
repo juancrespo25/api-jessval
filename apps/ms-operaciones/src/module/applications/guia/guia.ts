@@ -1,3 +1,11 @@
+import { TipoDocumento } from '../docadjunto/docadjunto';
+
+export type GuiaDocAdjuntoProps = {
+  id?: number;
+  numero: string;
+  tipo: TipoDocumento;
+};
+
 export type GuiaProps = {
   id?: string;
   id_guia?: number;
@@ -30,6 +38,8 @@ export type GuiaProps = {
   customer?:String;
   ccosto?:String;
   provincia?:String;
+  docadjuntos?: GuiaDocAdjuntoProps[];
+  cantidad_docadjuntos?: number;
 };
 
 export class Guia {
@@ -63,6 +73,8 @@ export class Guia {
   private readonly updatedAt?: Date;
   private readonly customer?:String;
   private readonly ccosto?:String;
+  private readonly docadjuntos?: GuiaDocAdjuntoProps[];
+  private readonly cantidad_docadjuntos?: number;
 
   constructor(props: GuiaProps) {
     Object.assign(this, props);
@@ -99,7 +111,9 @@ export class Guia {
       userUpdated: this.userUpdated,
       updatedAt: this.updatedAt,
       customer: this.customer,
-      ccosto: this.ccosto
+      ccosto: this.ccosto,
+      docadjuntos: this.docadjuntos,
+      cantidad_docadjuntos: this.cantidad_docadjuntos
     };
   }
 }

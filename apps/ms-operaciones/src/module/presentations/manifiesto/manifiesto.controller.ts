@@ -123,7 +123,6 @@ export class ManifiestoController {
       forbidNonWhitelisted: true,
     });
 
-    console.log(errores);
 
     if (errores.length > 0) {
       return res.status(400).json({

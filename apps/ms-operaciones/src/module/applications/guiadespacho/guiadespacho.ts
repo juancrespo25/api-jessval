@@ -5,6 +5,9 @@ export type GuiaDespachoProps = {
   estado?: string;
   userCreated?: string;
   createdAt?: Date;
+  provincia?: string;
+  destino?: string;
+  dnombres?: string;
 };
 
 export class GuiaDespacho {
@@ -14,6 +17,9 @@ export class GuiaDespacho {
   private readonly estado!: string;
   private readonly userCreated!: string;
   private readonly createdAt!: Date;
+  private readonly provincia!: string;
+  private readonly destino!: string;
+  private readonly dnombres!: string;
 
   constructor(props: GuiaDespachoProps){
     Object.assign(this, props)
@@ -26,7 +32,10 @@ export class GuiaDespacho {
       despacho: this.despacho,
       estado: this.estado,
       userCreated: this.userCreated,
-      createdAt: this.createdAt
+      createdAt: this.createdAt,
+      provincia: this.provincia,
+      destino: this.destino,
+      dnombres: this.dnombres
     }
   }
 }

@@ -1,19 +1,12 @@
-import { Column, OneToMany, PrimaryGeneratedColumn, Entity, ManyToOne } from "typeorm";
+import { Column, PrimaryGeneratedColumn, Entity, ManyToOne } from "typeorm";
 import { GuiaEntity } from "../../guia/entities";
-
-enum TipoDocumento {
-  FACTURA = 1,
-  BOLETA = 2,
-  GUIA_DE_REMISION = 3,
-  GUIA = 4,
-  ORDEN_DE_SERVICIO = 5,
-}
+import { TipoDocumento } from '../../../applications/docadjunto/docadjunto';
 
 @Entity({ name: 'docadjunto' })
 export class DocAdjuntoEntity {
 
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @ManyToOne(() => GuiaEntity, (guia) => guia.docadjuntos, {
     nullable: false,

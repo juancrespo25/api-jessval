@@ -4,4 +4,8 @@ export interface IDespachoPort {
   findById(id: number): Promise<Despacho | null>;
   findAll(fecha_inicial: Date, fecha_final: Date, agente: number, estado: string): Promise<Despacho[] | null>;
   save(despacho: Despacho): Promise<Despacho>;
+  updateDespacho(despacho: Despacho): Promise<Despacho>;
+  confirmDespacho(id: number, status: string,  userUpdated: string): Promise<Despacho>;
+  updateDespachoStatus(id: number, status: string,  userUpdated: string): Promise<Despacho>;
+  generarDespachos(): Promise<true>;
 }

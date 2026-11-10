@@ -6,6 +6,7 @@ import { GuiaEntity } from '../guia/entities/guia.entity';
 import { DestinatarioEntity } from '../destinatario/entities';
 import { Repository } from 'typeorm';
 import { MovimientoEntity } from '../movimiento/entities/movimiento.entity';
+import { DocAdjuntoEntity } from '../docadjunto/entities';
 
 export class OrdenAdapter implements IOrdenPort {
   private repository: Repository<OrdenEntity> | null = null;
@@ -137,7 +138,22 @@ export class OrdenAdapter implements IOrdenPort {
       );
 
       if (guiaEntities.length > 0) {
-        await manager.save(GuiaEntity, guiaEntities);
+        const savedGuias = await manager.save(GuiaEntity, guiaEntities);
+        const docAdjuntoEntities = savedGuias.flatMap((guiaEntity, index) =>
+          (guias[index].docadjuntos ?? []).map((docadjunto) => {
+            const docAdjuntoEntity = new DocAdjuntoEntity();
+            Object.assign(docAdjuntoEntity, {
+              id_guia: guiaEntity,
+              numero: docadjunto.numero,
+              tipo: docadjunto.tipo,
+            });
+            return docAdjuntoEntity;
+          }),
+        );
+
+        if (docAdjuntoEntities.length > 0) {
+          await manager.save(DocAdjuntoEntity, docAdjuntoEntities);
+        }
       }
 
       return saved;

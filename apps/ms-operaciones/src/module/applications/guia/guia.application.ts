@@ -11,4 +11,8 @@ export class GuiaApplication {
   async validateGuia(id_guia: number): Promise<Guia | null> {
     return await this.guiaPort.validateGuia(id_guia);
   }
+
+  async validateGuiaProvincia(id_guia: number): Promise<Guia | null> {
+    return await this.guiaPort.validateGuiaProvincia(id_guia)
+  }
 }

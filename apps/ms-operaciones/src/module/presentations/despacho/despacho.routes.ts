@@ -14,6 +14,10 @@ class DespachoRoutes {
     this.router.get('/', this.despachoController.findAll.bind(this.despachoController));
     this.router.get('/search/:id', this.despachoController.findById.bind(this.despachoController))
     this.router.post('/',  this.despachoController.save.bind(this.despachoController));
+    this.router.put('/', this.despachoController.updateDespacho.bind(this.despachoController));
+    this.router.put('/updatestatus', this.despachoController.updateDespachoStatus.bind(this.despachoController));
+    this.router.put('/confirm', this.despachoController.confirmDespacho.bind(this.despachoController));
+    this.router.post('/generar', this.despachoController.generarDespachos.bind(this.despachoController));
   }
 }
 

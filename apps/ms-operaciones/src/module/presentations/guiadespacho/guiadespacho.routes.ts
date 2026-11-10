@@ -14,6 +14,7 @@ export class GuiaDespachoRoutes {
 
   mountRotes(){
     this.router.post('/add', this.controller.addGuia.bind(this.controller));
+    this.router.get('/validate/:guia', this.controller.validateGuia.bind(this.controller));
   }
 }
 
