@@ -30,6 +30,8 @@ export class UbigeoGatewayController {
     }
   }
 
+
+//metodo para buscar ubigeo por código
   async findByCode(request: Request, response: Response) {
     const ubigeoCodeDto = plainToInstance(UbigeoCodeDTO, request.params);
     const error = await validate(ubigeoCodeDto);
