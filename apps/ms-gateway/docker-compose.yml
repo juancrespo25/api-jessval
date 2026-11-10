@@ -1,14 +1,16 @@
 services:
   system-ms-gateway:
-    image: juancrespo25/ms-gateway-app:latest
+    image: juancrespo25/ms-gateway-app:${IMAGE_TAG:-latest}
     container_name: system-ms-gateway
     environment:
       PORT: ${PORT}
       HOST: ${HOST}
-      URL_USER: ${URL_USER}
       URL_AUTH: ${URL_AUTH}
+      URL_USER: ${URL_USER}
       URL_CUSTOMER: ${URL_CUSTOMER}
       URL_CENTERCOST: ${URL_CENTERCOST}
+      URL_UBIGEO: ${URL_UBIGEO}
+      URL_PROVINCE: ${URL_PROVINCE}
     restart: always
     ports:
       - "4000:4000"
