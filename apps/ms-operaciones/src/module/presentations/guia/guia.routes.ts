@@ -15,6 +15,7 @@ class GuiaRoutes {
     this.router.post('/', this.controller.create.bind(this.controller));
     this.router.get('/validate/:id_guia', this.controller.validateGuia.bind(this.controller));
     this.router.get('/validateGuiaProvincia/:id_guia', this.controller.validateGuiaProvincia.bind(this.controller));
+    this.router.get('/:id_guia/detalle', this.controller.verGuia.bind(this.controller));
   }
 }
 
