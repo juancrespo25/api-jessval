@@ -12,6 +12,10 @@ class OrdenRoutes {
   }
 
   private mountRoutes() {
+    this.router.get('/query', this.controller.queryOrden.bind(this.controller));
+    this.router.get('/:numero/guias/impresion', this.controller.getGuiasImpresion.bind(this.controller));
+    this.router.get('/:numero/guias/etiquetas-barra', this.controller.getEtiquetasBarraImpresion.bind(this.controller));
+    this.router.get('/:numero/detalle', this.controller.getOrdenByCode.bind(this.controller));
     this.router.get('/:numero', this.controller.findById.bind(this.controller));
     this.router.post('/', this.controller.create.bind(this.controller));
     this.router.get('/get/today', this.controller.getToday.bind(this.controller));

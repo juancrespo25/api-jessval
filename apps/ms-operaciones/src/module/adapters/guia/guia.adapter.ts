@@ -1,5 +1,5 @@
 import { DataBaseBootstrapp } from '../../../bootstrapp';
-import { IGuiaPort } from '../../ports/guia';
+import { GuiaDetalle, IGuiaPort } from '../../ports/guia';
 import { Guia } from '../../applications/guia';
 import { GuiaEntity } from './entities';
 import { Repository } from 'typeorm';
@@ -111,6 +111,41 @@ export class GuiaAdapter implements IGuiaPort {
       destinatario: savedGuia.destinatario,
       docadjuntos: savedGuia.docadjuntos.map(({ id, numero, tipo }) => ({ id, numero, tipo })),
     });
+  }
+
+  async verGuia(id_guia: number): Promise<GuiaDetalle | null> {
+    const rows: GuiaDetalle[] = await this.getRepository().query(
+      `SELECT o.numero, g.item, c.descripcion AS cliente, cc.descripcion AS ccosto,
+        concat_ws(' - ', uo.departamento, uo.provincia, uo.distrito) AS origen,
+        concat_ws(' - ', ud.departamento, ud.provincia, ud.distrito) AS destino,
+        g.empresa, o.fecha_registro, d.nombres, g.direccion, g.observaciones,
+        g.peso, g.bultos, g.unidades, ct.descripcion AS contenido, tp.descripcion,
+        g.imagen AS imagen1, g.imagen2, g.imagen3,
+        CASE g.estado
+          WHEN 'PD' THEN 'Pendiente'
+          WHEN 'MT' THEN 'Motivado'
+          WHEN 'EF' THEN 'Entregado'
+          WHEN 'RT' THEN 'Retorno'
+          WHEN 'DP' THEN 'Despachado'
+          WHEN 'ET' THEN 'En transito'
+          ELSE g.estado
+        END AS estado,
+        (SELECT count(*)::int FROM docadjunto da WHERE da."idGuiaId" = g.id) AS total_documentos,
+        concat_ws(' - ', us.nombres, us.apellidos) AS usuario
+       FROM orden o
+       INNER JOIN guia g ON o.id = g.orden_id
+       INNER JOIN destinatario d ON o.customer = d.cliente AND g.destinatario = d.id
+       INNER JOIN customer c ON o.customer = c.codigo
+       INNER JOIN centrocosto cc ON o.customer = cc.cliente AND o.ccosto = cc.codigo
+       INNER JOIN ubigeo uo ON o.origen = uo.codigo
+       INNER JOIN ubigeo ud ON g.destino = ud.codigo
+       INNER JOIN contenido ct ON g.contenido = ct.id
+       INNER JOIN tipoenvio tp ON g.tenvio = tp.id
+       INNER JOIN "user" us ON o."userCreated" = us.codigo
+       WHERE g.id_guia = $1`,
+      [id_guia],
+    );
+    return rows[0] ?? null;
   }
 
   async validateGuia(id_guia: number): Promise<Guia | null> {

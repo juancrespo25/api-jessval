@@ -1,4 +1,4 @@
-import { IGuiaPort } from '../../ports/guia';
+import { GuiaDetalle, IGuiaPort } from '../../ports/guia';
 import { Guia } from './guia';
 
 export class GuiaApplication {
@@ -14,5 +14,9 @@ export class GuiaApplication {
 
   async validateGuiaProvincia(id_guia: number): Promise<Guia | null> {
     return await this.guiaPort.validateGuiaProvincia(id_guia)
+  }
+
+  async verGuia(id_guia: number): Promise<GuiaDetalle | null> {
+    return this.guiaPort.verGuia(id_guia);
   }
 }

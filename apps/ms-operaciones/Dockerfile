@@ -21,6 +21,7 @@ WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/apps/ms-operaciones/package.json ./
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/apps/ms-operaciones/dist ./dist
+COPY apps/ms-operaciones/images ./images
 
 EXPOSE 4006
 
